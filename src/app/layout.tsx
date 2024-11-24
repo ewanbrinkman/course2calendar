@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { createTheme, MantineProvider, ColorSchemeScript } from "@mantine/core";
 import "./globals.css";
 import "@mantine/core/styles.css";
@@ -22,6 +23,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme}>{children}</MantineProvider>
+        <Analytics />
       </body>
     </html>
   );
