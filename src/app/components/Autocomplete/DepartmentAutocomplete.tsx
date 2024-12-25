@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BaseAutocomplete from "./BaseAutocomplete";
-import courseApiWrapper from "course-api-wrapper";
+import BaseAutocomplete from "./CourseIdentifierAutocomplete";
 
 interface DepartmentAutocompleteProps {
   updateValue: (department: string | null, selected: boolean) => void;
@@ -11,24 +10,6 @@ interface DepartmentAutocompleteProps {
 export default function DepartmentAutocomplete(
   props: DepartmentAutocompleteProps
 ) {
-  const [departments, setDepartments] = useState<string[] | null | undefined>(
-    undefined
-  );
-
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const data = await courseApiWrapper.departments();
-        setDepartments(data.map((department) => department.id.toUpperCase()));
-      } catch (err) {
-        console.error("Failed to fetch departments:", err);
-        setDepartments(null);
-      }
-    };
-
-    fetchDepartments();
-  }, []);
-
   return (
     <BaseAutocomplete
       label="Select Department"

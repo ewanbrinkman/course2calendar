@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BaseAutocomplete from "./BaseAutocomplete";
+import BaseAutocomplete from "./CourseIdentifierAutocomplete";
 import courseApiWrapper from "course-api-wrapper";
 
 interface CourseAutocompleteProps {

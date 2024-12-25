@@ -1,15 +1,18 @@
 import { Autocomplete } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-interface BaseAutocompleteProps {
+interface CourseIdentifierAutocompleteProps {
   label: string;
   placeholder: string;
   data: string[] | null | undefined;
-  updateValue: (value: string | null, selected: boolean) => void;
+  onMatch: (value: string | null) => void;
+  onBlur: (valid: boolean) => void;
   disabled?: boolean;
 }
 
-export default function BaseAutocomplete(props: BaseAutocompleteProps) {
+export default function CourseIdentifierAutocomplete(
+  props: CourseIdentifierAutocompleteProps
+) {
   const [input, setInput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +31,7 @@ export default function BaseAutocomplete(props: BaseAutocompleteProps) {
     const formattedInput = value.toUpperCase();
     if (props.data && props.data.includes(formattedInput)) {
       // Don't replace `input` with the formatted input though. This is done without informing the user.
-      props.updateValue(formattedInput, false);
+      props.onMatch(formattedInput);
     }
   };
 
@@ -36,11 +39,11 @@ export default function BaseAutocomplete(props: BaseAutocompleteProps) {
     const formattedInput = input.toUpperCase();
     if (props.data && props.data.includes(formattedInput)) {
       setInput(formattedInput);
-      props.updateValue(formattedInput, true);
+      props.onBlur(true);
 
       setError(null);
     } else {
-      props.updateValue(null, true);
+      props.onBlur(false);
 
       if (input !== "") {
         setError("Please select a valid department from the dropdown.");
