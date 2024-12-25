@@ -20,6 +20,12 @@ export default function Home() {
     string[] | null | undefined
   >(undefined);
 
+  const [sectionError, setSectionError] = useState<string | null>(null);
+  const [section, setSection] = useState<string | null>(null);
+  const [sections, setSections] = useState<string[] | null | undefined>(
+    undefined
+  );
+
   const onChangeDepartment = (value: string) => {
     if (departments && departments.includes(value)) {
       setDepartment(value);
@@ -32,8 +38,17 @@ export default function Home() {
   const onChangeCourseNumber = (value: string) => {
     if (courseNumbers && courseNumbers.includes(value)) {
       setCourseNumber(value);
+      setSections(undefined);
     } else {
       setCourseNumber(null);
+    }
+  };
+
+  const onChangeSection = (value: string) => {
+    if (sections && sections.includes(value)) {
+      setSection(value);
+    } else {
+      setSection(null);
     }
   };
 
@@ -74,6 +89,38 @@ export default function Home() {
     fetchCourseNumbers();
   }, [department]);
 
+  useEffect(() => {
+    const fetchSections = async () => {
+      if (
+        department === null ||
+        department === undefined ||
+        courseNumber === null ||
+        courseNumber === undefined
+      ) {
+        setSection(null);
+        setSections(undefined);
+
+        setSectionError(null);
+
+        return;
+      }
+
+      try {
+        const data = await courseApiWrapper.course(department, courseNumber);
+        setSections(
+          data.sectionNumbers.map((sectionNumber) =>
+            sectionNumber.toUpperCase()
+          )
+        );
+      } catch (err) {
+        console.error("Failed to fetch sections:", err);
+        setSections(null);
+      }
+    };
+
+    fetchSections();
+  }, [courseNumber]);
+
   const departmentPlaceholder = useMemo(() => {
     if (departments === undefined) {
       return "Loading...";
@@ -99,6 +146,20 @@ export default function Home() {
       return `Select A Number (ex. ${courseNumbers[0]})`;
     }
   }, [department, courseNumbers]);
+
+  const sectionPlaceholder = useMemo(() => {
+    if (courseNumber === null) {
+      return "Select A Number First";
+    } else if (sections === undefined) {
+      return "Loading...";
+    } else if (sections === null) {
+      return "API Error";
+    } else if (sections.length === 0) {
+      return "None Available";
+    } else {
+      return `Select A Number (ex. ${sections[0]})`;
+    }
+  }, [courseNumbers, sections]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -131,6 +192,23 @@ export default function Home() {
         disabled={department === null}
         error={courseNumberError}
         setError={setCourseNumberError}
+      />
+
+      <div style={{ marginTop: "200px" }}></div>
+
+      <Text size="xl">Section Selector</Text>
+      <div style={{ marginTop: "20px" }}></div>
+      <Text>Matched Section: {section ?? "null"}</Text>
+
+      <CourseIdentifierAutocomplete
+        label="Section"
+        placeholder={sectionPlaceholder}
+        data={sections}
+        valid={section !== null}
+        onChange={onChangeSection}
+        disabled={courseNumber === null}
+        error={sectionError}
+        setError={setSectionError}
       />
     </div>
   );
