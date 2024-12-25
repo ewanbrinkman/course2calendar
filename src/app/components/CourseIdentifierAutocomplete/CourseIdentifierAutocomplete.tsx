@@ -5,8 +5,8 @@ interface CourseIdentifierAutocompleteProps {
   label: string;
   placeholder: string;
   data: string[] | null | undefined;
-  onMatch: (value: string | null) => void;
-  onBlur: (valid: boolean) => void;
+  valid: boolean;
+  onChange: (value: string) => void;
   disabled?: boolean;
 }
 
@@ -24,30 +24,20 @@ export default function CourseIdentifierAutocomplete(
     }
   }, [props.data]);
 
-  const onChange = (value: string) => {
-    setInput(value);
+  const formatValue = (value: string) => {
+    return value.toUpperCase();
+  };
 
-    // Send data to parent early before submit, so can fetch data before the user needs it.
-    const formattedInput = value.toUpperCase();
-    if (props.data && props.data.includes(formattedInput)) {
-      // Don't replace `input` with the formatted input though. This is done without informing the user.
-      props.onMatch(formattedInput);
-    }
+  const onChange = (value: string) => {
+    const formattedValue = formatValue(value);
+
+    setInput(formattedValue);
+    props.onChange(formattedValue);
   };
 
   const onBlur = () => {
-    const formattedInput = input.toUpperCase();
-    if (props.data && props.data.includes(formattedInput)) {
-      setInput(formattedInput);
-      props.onBlur(true);
-
-      setError(null);
-    } else {
-      props.onBlur(false);
-
-      if (input !== "") {
-        setError("Please select a valid department from the dropdown.");
-      }
+    if (!props.valid && input !== "") {
+      setError("Please select a valid value from the dropdown.");
     }
   };
 

@@ -1,35 +1,34 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { Text } from "@mantine/core";
-import CourseIdentifierAutocomplete from "./components/Autocomplete/CourseIdentifierAutocomplete";
 import courseApiWrapper from "course-api-wrapper";
+import CourseIdentifierAutocomplete from "@components/CourseIdentifierAutocomplete";
 
 export default function Home() {
   const [department, setDepartment] = useState<string | null>(null);
   const [departments, setDepartments] = useState<string[] | null | undefined>(
     undefined
   );
-
-  const [courseNumberDisabled, setCourseNumberDisabled] =
-    useState<boolean>(true);
   const [courseNumber, setCourseNumber] = useState<string | null>(null);
   const [courseNumbers, setCourseNumbers] = useState<
     string[] | null | undefined
   >(undefined);
-  const [pendingCourseNumbers, setPendingCourseNumbers] = useState<
-    string[] | null | undefined
-  >(undefined);
 
-  const onBlurDepartment = (valid: boolean) => {
-    setCourseNumberDisabled(!valid);
-
-    if (valid) {
-      setCourseNumbers(pendingCourseNumbers);
+  const onChangeDepartment = (value: string) => {
+    if (departments && departments.includes(value)) {
+      setDepartment(value);
     } else {
       setDepartment(null);
     }
   };
-  const onBlurCourseNumber = (valid: boolean) => {};
+  const onChangeCourseNumber = (value: string) => {
+    if (courseNumbers && courseNumbers.includes(value)) {
+      setCourseNumber(value);
+    } else {
+      setCourseNumber(null);
+    }
+  };
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -47,18 +46,18 @@ export default function Home() {
   useEffect(() => {
     const fetchCourseNumbers = async () => {
       if (department === null) {
+        setCourseNumber(null);
         setCourseNumbers(undefined);
-        setPendingCourseNumbers(undefined);
 
         return;
       }
 
       try {
         const data = await courseApiWrapper.departmentCourseNumbers(department);
-        setPendingCourseNumbers(data);
+        setCourseNumbers(data);
       } catch (err) {
         console.error("Failed to fetch courses:", err);
-        setPendingCourseNumbers(null);
+        setCourseNumbers(null);
       }
     };
 
@@ -75,8 +74,8 @@ export default function Home() {
         label="Department"
         placeholder="Start typing a department ID"
         data={departments}
-        onMatch={setDepartment}
-        onBlur={onBlurDepartment}
+        valid={department !== null}
+        onChange={onChangeDepartment}
       />
 
       <div style={{ marginTop: "200px" }}></div>
@@ -88,14 +87,14 @@ export default function Home() {
       <CourseIdentifierAutocomplete
         label="Number"
         placeholder={
-          courseNumberDisabled
-            ? "Select A Department"
-            : "Start typing a course number"
+          department !== null
+            ? "Start typing a course number"
+            : "Select A Department First"
         }
         data={courseNumbers}
-        onMatch={setCourseNumber}
-        onBlur={onBlurCourseNumber}
-        disabled={courseNumberDisabled}
+        valid={courseNumber !== null}
+        onChange={onChangeCourseNumber}
+        disabled={department === null}
       />
     </div>
   );
