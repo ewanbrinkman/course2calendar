@@ -5,13 +5,16 @@ import BaseAutocomplete from "./BaseAutocomplete";
 import courseApiWrapper from "course-api-wrapper";
 
 interface DepartmentAutocompleteProps {
-  onDepartmentSelect: (department: string | null) => void;
+  onMatch: (department: string | null) => void;
+  onBlur: () => void;
 }
 
 export default function DepartmentAutocomplete(
   props: DepartmentAutocompleteProps
 ) {
-  const [departments, setDepartments] = useState<null | string[]>([]);
+  const [departments, setDepartments] = useState<string[] | null | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -32,7 +35,8 @@ export default function DepartmentAutocomplete(
       label="Select Department"
       placeholder="Start typing a department ID"
       data={departments}
-      onSelect={props.onDepartmentSelect}
+      onMatch={props.onMatch}
+      onBlur={props.onBlur}
     />
   );
 }

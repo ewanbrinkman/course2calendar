@@ -4,63 +4,64 @@ import { KeyboardEvent, useEffect, useRef, useState } from "react";
 interface BaseAutocompleteProps {
   label: string;
   placeholder: string;
-  data: string[] | null;
-  onSelect: (value: string | null) => void;
+  data: string[] | null | undefined;
+  onMatch: (value: string | null) => void;
+  onBlur: () => void;
   disabled?: boolean;
 }
 
 export default function BaseAutocomplete(props: BaseAutocompleteProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [input, setInput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (props.data === null) {
-      setError("Unable to fetch departments. Please try again later.");
+      setError("Unable to fetch. Please try again later.");
     }
   }, [props.data]);
 
-  // const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-  //   // if (event.key === "Enter") {
-  //   //   handleSelect(inputValue);
-  //   //   inputRef.current?.blur();
-  //   // }
-  // };
+  const onChange = (value: string) => {
+    setInput(value);
 
-  const handleInputChange = (value: string) => {
-    setInputValue(value);
+    // Send data to parent early before submit, so can fetch data before the user needs it.
+    const formattedInput = value.toUpperCase();
+    if (props.data && props.data.includes(formattedInput)) {
+      // Don't replace `input` with the formatted input though. This is done without informing the user.
+      props.onMatch(formattedInput);
+    }
   };
 
-  const handleSelect = (value: string) => {
-    const formattedValue = value.toUpperCase();
-    if (props.data && props.data.includes(formattedValue)) {
-      setInputValue(formattedValue);
-      props.onSelect(formattedValue);
+  const onBlur = () => {
+    const formattedInput = input.toUpperCase();
+    if (props.data && props.data.includes(formattedInput)) {
+      setInput(formattedInput);
+      props.onBlur();
+
       setError(null);
-    } else if (inputValue !== "") {
-      props.onSelect(null);
+    } else if (input !== "") {
+      props.onMatch(null);
+      props.onBlur();
+
       setError("Please select a valid department from the dropdown.");
     }
   };
 
-  const handleFocus = () => {
+  const onFocus = () => {
     if (error !== null) {
-      setInputValue("");
+      setInput("");
       setError(null);
     }
   };
 
   return (
     <Autocomplete
-      ref={inputRef}
       label={props.label}
       placeholder={props.placeholder}
       data={props.data || []}
-      value={inputValue}
-      onChange={handleInputChange}
-      onKeyDown={handleKeyDown}
-      onBlur={() => handleSelect(inputValue)} // Validate on blur
-      onFocus={handleFocus}
+      value={input}
+      onChange={onChange}
+      onBlur={onBlur}
+      onFocus={onFocus}
       error={error}
       disabled={props.disabled}
     />
