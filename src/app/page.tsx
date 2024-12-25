@@ -64,6 +64,33 @@ export default function Home() {
     fetchCourseNumbers();
   }, [department]);
 
+  const departmentPlaceholder = useMemo(() => {
+    if (departments) {
+      if (departments.length > 0) {
+        return `Select A Department (ex. ${departments[0]})`;
+      } else {
+        return "None Available";
+      }
+    } else {
+      return "Loading...";
+    }
+  }, [departments]);
+  const courseNumberPlaceholder = useMemo(() => {
+    if (department !== null) {
+      if (courseNumbers) {
+        if (courseNumbers.length > 0) {
+          return `Select A Number (ex. ${courseNumbers[0]})`;
+        } else {
+          return "None Available";
+        }
+      } else {
+        return "Loading...";
+      }
+    } else {
+      return "Select A Department First";
+    }
+  }, [department, courseNumbers]);
+
   return (
     <div style={{ padding: "20px" }}>
       <Text size="xl">Department Selector</Text>
@@ -72,7 +99,7 @@ export default function Home() {
 
       <CourseIdentifierAutocomplete
         label="Department"
-        placeholder="Start typing a department ID"
+        placeholder={departmentPlaceholder}
         data={departments}
         valid={department !== null}
         onChange={onChangeDepartment}
@@ -86,11 +113,7 @@ export default function Home() {
 
       <CourseIdentifierAutocomplete
         label="Number"
-        placeholder={
-          department !== null
-            ? "Start typing a course number"
-            : "Select A Department First"
-        }
+        placeholder={courseNumberPlaceholder}
         data={courseNumbers}
         valid={courseNumber !== null}
         onChange={onChangeCourseNumber}
