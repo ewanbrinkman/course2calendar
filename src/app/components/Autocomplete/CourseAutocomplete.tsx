@@ -1,57 +1,65 @@
-// "use client";
+"use client";
 
-// import { useEffect, useState } from "react";
-// import BaseAutocomplete from "./BaseAutocomplete";
-// import courseApiWrapper from "course-api-wrapper";
+import { useEffect, useMemo, useState } from "react";
+import BaseAutocomplete from "./BaseAutocomplete";
+import courseApiWrapper from "course-api-wrapper";
 
-// interface CourseAutocompleteProps {
-//   onCourseSelect: (course: string | null) => void;
-//   department: string | null;
-// }
+interface CourseAutocompleteProps {
+  department: string | null;
+  departmentSelected: boolean;
+  onMatch: (course: string | null) => void;
+  onBlur: () => void;
+}
 
-// export default function CourseAutocomplete({
-//   department,
-//   onCourseSelect,
-// }: CourseAutocompleteProps) {
-//   const [courses, setCourses] = useState<null | string[]>([]);
+export default function CourseAutocomplete(props: CourseAutocompleteProps) {
+  const [disabled, setDisabled] = useState<boolean>(true);
 
-//   // Fetch courses on department update.
-//   useEffect(() => {
-//     const fetchCourses = async () => {
-//       if (department === null) {
-//         setCourses(null);
+  const [courses, setCourses] = useState<string[] | null | undefined>(
+    undefined
+  );
+  const [pendingCourses, setPendingCourses] = useState<
+    string[] | null | undefined
+  >(undefined);
 
-//         return;
-//       }
+  useEffect(() => {
+    const fetchCourses = async () => {
+      if (props.department === null) {
+        return;
+      }
 
-//       try {
-//         const data = await courseApiWrapper.departmentCourseNumbers(department);
-//         setCourses(data);
-//       } catch (err) {
-//         console.error("Failed to fetch courses:", err);
-//         setCourses(null);
-//       }
-//     };
+      try {
+        const data = await courseApiWrapper.departmentCourseNumbers(
+          props.department
+        );
+        setPendingCourses(data);
+      } catch (err) {
+        console.error("Failed to fetch courses:", err);
+        setPendingCourses(null);
+      }
+    };
 
-//     fetchCourses();
-//   }, [department]);
+    fetchCourses();
+  }, [props.department]);
 
-//   const isValid = (value: string) => {
-//     return courses?.includes(value.toUpperCase()) || false;
-//   };
+  useEffect(() => {
+    if (props.departmentSelected) {
+      setCourses(pendingCourses);
+      setDisabled(props.department === null);
 
-//   const onSelect = (value: string | null) => {
-//     onCourseSelect(value?.toUpperCase() ?? null);
-//   };
+      // Reset the current autocomplete value to an empty string.
+    }
+  }, [props.departmentSelected]);
 
-//   return (
-//     <BaseAutocomplete
-//       label="Select Course"
-//       placeholder="Start typing a course ID"
-//       data={courses}
-//       onSelect={onSelect}
-//       isValid={isValid}
-//       disabled={courses === null}
-//     />
-//   );
-// }
+  return (
+    <BaseAutocomplete
+      label="Select Department"
+      placeholder={
+        disabled ? "Select A Department" : "Start typing a course number"
+      }
+      data={courses}
+      onMatch={props.onMatch}
+      onBlur={props.onBlur}
+      disabled={disabled}
+    />
+  );
+}
