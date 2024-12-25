@@ -5,8 +5,7 @@ import BaseAutocomplete from "./BaseAutocomplete";
 import courseApiWrapper from "course-api-wrapper";
 
 interface DepartmentAutocompleteProps {
-  onMatch: (department: string | null) => void;
-  onBlur: () => void;
+  updateValue: (department: string | null, selected: boolean) => void;
 }
 
 export default function DepartmentAutocomplete(
@@ -35,8 +34,7 @@ export default function DepartmentAutocomplete(
       label="Select Department"
       placeholder="Start typing a department ID"
       data={departments}
-      onMatch={props.onMatch}
-      onBlur={props.onBlur}
+      updateValue={props.updateValue}
     />
   );
 }

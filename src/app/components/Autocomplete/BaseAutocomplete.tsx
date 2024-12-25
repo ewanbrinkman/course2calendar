@@ -1,12 +1,11 @@
 import { Autocomplete } from "@mantine/core";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface BaseAutocompleteProps {
   label: string;
   placeholder: string;
   data: string[] | null | undefined;
-  onMatch: (value: string | null) => void;
-  onBlur: () => void;
+  updateValue: (value: string | null, selected: boolean) => void;
   disabled?: boolean;
 }
 
@@ -15,6 +14,8 @@ export default function BaseAutocomplete(props: BaseAutocompleteProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setInput("");
+
     if (props.data === null) {
       setError("Unable to fetch. Please try again later.");
     }
@@ -27,7 +28,7 @@ export default function BaseAutocomplete(props: BaseAutocompleteProps) {
     const formattedInput = value.toUpperCase();
     if (props.data && props.data.includes(formattedInput)) {
       // Don't replace `input` with the formatted input though. This is done without informing the user.
-      props.onMatch(formattedInput);
+      props.updateValue(formattedInput, false);
     }
   };
 
@@ -35,14 +36,15 @@ export default function BaseAutocomplete(props: BaseAutocompleteProps) {
     const formattedInput = input.toUpperCase();
     if (props.data && props.data.includes(formattedInput)) {
       setInput(formattedInput);
-      props.onBlur();
+      props.updateValue(formattedInput, true);
 
       setError(null);
-    } else if (input !== "") {
-      props.onMatch(null);
-      props.onBlur();
+    } else {
+      props.updateValue(null, true);
 
-      setError("Please select a valid department from the dropdown.");
+      if (input !== "") {
+        setError("Please select a valid department from the dropdown.");
+      }
     }
   };
 

@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import BaseAutocomplete from "./BaseAutocomplete";
 import courseApiWrapper from "course-api-wrapper";
 
 interface CourseAutocompleteProps {
   department: string | null;
   departmentSelected: boolean;
-  onMatch: (course: string | null) => void;
-  onBlur: () => void;
+  updateValue: (course: string | null, selected: boolean) => void;
 }
 
 export default function CourseAutocomplete(props: CourseAutocompleteProps) {
@@ -43,10 +42,13 @@ export default function CourseAutocomplete(props: CourseAutocompleteProps) {
 
   useEffect(() => {
     if (props.departmentSelected) {
-      setCourses(pendingCourses);
-      setDisabled(props.department === null);
+      if (props.department === null) {
+        setPendingCourses(undefined);
+      } else {
+        setCourses(pendingCourses);
+      }
 
-      // Reset the current autocomplete value to an empty string.
+      setDisabled(props.department === null);
     }
   }, [props.departmentSelected]);
 
@@ -57,8 +59,7 @@ export default function CourseAutocomplete(props: CourseAutocompleteProps) {
         disabled ? "Select A Department" : "Start typing a course number"
       }
       data={courses}
-      onMatch={props.onMatch}
-      onBlur={props.onBlur}
+      updateValue={props.updateValue}
       disabled={disabled}
     />
   );

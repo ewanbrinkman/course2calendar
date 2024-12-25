@@ -11,20 +11,14 @@ export default function Home() {
   const [courseNumberSelected, setCourseNumberSelected] =
     useState<boolean>(false);
 
-  const onMatchDepartment = (value: string | null) => {
+  const updateDepartment = (value: string | null, selected: boolean) => {
     setDepartment(value);
-    setDepartmentSelected(false);
-  };
-  const onBlurDepartment = () => {
-    setDepartmentSelected(true);
+    setDepartmentSelected(selected);
   };
 
-  const onMatchCourseNumber = (value: string | null) => {
+  const updateCourseNumber = (value: string | null, selected: boolean) => {
     setCourseNumber(value);
-    setCourseNumberSelected(false);
-  };
-  const onBlurCourseNumber = () => {
-    setCourseNumberSelected(true);
+    setCourseNumberSelected(selected);
   };
 
   return (
@@ -34,10 +28,7 @@ export default function Home() {
       <Text>Matched Department: {department ?? "null"}</Text>
       <Text>Selected: {departmentSelected ? "true" : "false"}</Text>
 
-      <DepartmentAutocomplete
-        onMatch={onMatchDepartment}
-        onBlur={onBlurDepartment}
-      />
+      <DepartmentAutocomplete updateValue={updateDepartment} />
 
       <div style={{ marginTop: "200px" }}></div>
 
@@ -48,8 +39,7 @@ export default function Home() {
       <CourseAutocomplete
         department={department}
         departmentSelected={departmentSelected}
-        onMatch={onMatchCourseNumber}
-        onBlur={onBlurCourseNumber}
+        updateValue={updateCourseNumber}
       />
     </div>
   );
