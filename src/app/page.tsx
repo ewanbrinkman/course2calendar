@@ -23,6 +23,7 @@ export default function Home() {
   const onChangeDepartment = (value: string) => {
     if (departments && departments.includes(value)) {
       setDepartment(value);
+      setCourseNumbers(undefined);
     } else {
       setDepartment(null);
     }
