@@ -8,19 +8,20 @@ interface CourseIdentifierAutocompleteProps {
   valid: boolean;
   onChange: (value: string) => void;
   disabled?: boolean;
+  error: string | null;
+  setError: (value: string | null) => void;
 }
 
 export default function CourseIdentifierAutocomplete(
   props: CourseIdentifierAutocompleteProps
 ) {
   const [input, setInput] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setInput("");
 
     if (props.data === null) {
-      setError("Unable to fetch. Please try again later.");
+      props.setError("Unable to fetch. Please try again later.");
     }
   }, [props.data]);
 
@@ -37,14 +38,14 @@ export default function CourseIdentifierAutocomplete(
 
   const onBlur = () => {
     if (!props.valid && input !== "") {
-      setError("Please select a valid value from the dropdown.");
+      props.setError("Please select a valid value from the dropdown.");
     }
   };
 
   const onFocus = () => {
-    if (error !== null) {
+    if (props.error !== null) {
       setInput("");
-      setError(null);
+      props.setError(null);
     }
   };
 
@@ -57,7 +58,7 @@ export default function CourseIdentifierAutocomplete(
       onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}
-      error={error}
+      error={props.error}
       disabled={props.disabled}
     />
   );

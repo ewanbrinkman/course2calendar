@@ -6,9 +6,14 @@ import courseApiWrapper from "course-api-wrapper";
 import CourseIdentifierAutocomplete from "@components/CourseIdentifierAutocomplete";
 
 export default function Home() {
+  const [departmentError, setDepartmentError] = useState<string | null>(null);
   const [department, setDepartment] = useState<string | null>(null);
   const [departments, setDepartments] = useState<string[] | null | undefined>(
     undefined
+  );
+
+  const [courseNumberError, setCourseNumberError] = useState<string | null>(
+    null
   );
   const [courseNumber, setCourseNumber] = useState<string | null>(null);
   const [courseNumbers, setCourseNumbers] = useState<
@@ -22,6 +27,7 @@ export default function Home() {
       setDepartment(null);
     }
   };
+
   const onChangeCourseNumber = (value: string) => {
     if (courseNumbers && courseNumbers.includes(value)) {
       setCourseNumber(value);
@@ -43,11 +49,14 @@ export default function Home() {
 
     fetchDepartments();
   }, []);
+
   useEffect(() => {
     const fetchCourseNumbers = async () => {
-      if (department === null) {
+      if (department === null || department === undefined) {
         setCourseNumber(null);
         setCourseNumbers(undefined);
+
+        setCourseNumberError(null);
 
         return;
       }
@@ -65,29 +74,28 @@ export default function Home() {
   }, [department]);
 
   const departmentPlaceholder = useMemo(() => {
-    if (departments) {
-      if (departments.length > 0) {
-        return `Select A Department (ex. ${departments[0]})`;
-      } else {
-        return "None Available";
-      }
-    } else {
+    if (departments === undefined) {
       return "Loading...";
+    } else if (departments === null) {
+      return "API Error";
+    } else if (departments.length === 0) {
+      return "None Available";
+    } else {
+      return `Select A Department (ex. ${departments[0]})`;
     }
   }, [departments]);
+
   const courseNumberPlaceholder = useMemo(() => {
-    if (department !== null) {
-      if (courseNumbers) {
-        if (courseNumbers.length > 0) {
-          return `Select A Number (ex. ${courseNumbers[0]})`;
-        } else {
-          return "None Available";
-        }
-      } else {
-        return "Loading...";
-      }
-    } else {
+    if (department === null) {
       return "Select A Department First";
+    } else if (courseNumbers === undefined) {
+      return "Loading...";
+    } else if (courseNumbers === null) {
+      return "API Error";
+    } else if (courseNumbers.length === 0) {
+      return "None Available";
+    } else {
+      return `Select A Number (ex. ${courseNumbers[0]})`;
     }
   }, [department, courseNumbers]);
 
@@ -103,11 +111,13 @@ export default function Home() {
         data={departments}
         valid={department !== null}
         onChange={onChangeDepartment}
+        error={departmentError}
+        setError={setDepartmentError}
       />
 
       <div style={{ marginTop: "200px" }}></div>
 
-      <Text size="xl">Course Selector</Text>
+      <Text size="xl">Number Selector</Text>
       <div style={{ marginTop: "20px" }}></div>
       <Text>Matched Course: {courseNumber ?? "null"}</Text>
 
@@ -118,6 +128,8 @@ export default function Home() {
         valid={courseNumber !== null}
         onChange={onChangeCourseNumber}
         disabled={department === null}
+        error={courseNumberError}
+        setError={setCourseNumberError}
       />
     </div>
   );
