@@ -21,7 +21,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className="antialiased">
+      <body className="antialiased flex flex-col h-dscreen">
         <MantineProvider theme={theme}>{children}</MantineProvider>
         <Analytics />
       </body>

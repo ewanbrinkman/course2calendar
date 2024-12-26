@@ -1,7 +1,7 @@
 import { Autocomplete } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-interface CourseIdentifierAutocompleteProps {
+interface CourseSelectorAutocompleteProps {
   label: string;
   placeholder: string;
   data: string[] | null | undefined;
@@ -12,8 +12,8 @@ interface CourseIdentifierAutocompleteProps {
   setError: (value: string | null) => void;
 }
 
-export default function CourseIdentifierAutocomplete(
-  props: CourseIdentifierAutocompleteProps
+export default function CourseSelectorAutocomplete(
+  props: CourseSelectorAutocompleteProps
 ) {
   const [input, setInput] = useState<string>("");
 
