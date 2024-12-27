@@ -2,7 +2,8 @@ import type { Config } from "tailwindcss";
 import themeConfig from "./src/assets/config/theme.json";
 
 const config: Config = {
-  darkMode: ["class", '[data-mantine-color-scheme="dark"]'],
+  // darkMode: ["class", '[data-mantine-color-scheme="dark"]'],
+  // corePlugins: { preflight: false },
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
