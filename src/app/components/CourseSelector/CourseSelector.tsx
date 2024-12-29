@@ -5,7 +5,13 @@ import { Text } from "@mantine/core";
 import courseApiWrapper from "course-api-wrapper";
 import CourseSelectorAutocomplete from "@components/CourseSelector/CourseSelectorAutocomplete";
 
-interface CourseSelectorProps {}
+interface CourseSelectorProps {
+  updateCourseSelection: (courseSelection: {
+    department: string | null;
+    courseNumber: string | null;
+    section: string | null;
+  }) => void;
+}
 
 export default function CourseSelector(props: CourseSelectorProps) {
   const [departmentError, setDepartmentError] = useState<string | null>(null);
@@ -55,6 +61,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
   };
 
   useEffect(() => {
+    props.updateCourseSelection({
+      department: null,
+      courseNumber: null,
+      section: null,
+    });
+
     const fetchDepartments = async () => {
       try {
         const data = await courseApiWrapper.departments();
@@ -69,6 +81,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
   }, []);
 
   useEffect(() => {
+    props.updateCourseSelection({
+      department: null,
+      courseNumber: null,
+      section: null,
+    });
+
     const fetchCourseNumbers = async () => {
       if (department === null || department === undefined) {
         setCourseNumber(null);
@@ -162,6 +180,14 @@ export default function CourseSelector(props: CourseSelectorProps) {
       return `Select A Number (ex. ${sections[0]})`;
     }
   }, [courseNumbers, sections]);
+
+  useEffect(() => {
+    if (!department || !courseNumber || !section) {
+      return;
+    }
+
+    props.updateCourseSelection({ department, courseNumber, section });
+  }, [section]);
 
   return (
     <div style={{ padding: "20px" }}>
