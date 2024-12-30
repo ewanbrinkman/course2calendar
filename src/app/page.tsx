@@ -59,9 +59,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
+      <Text>Add A Course</Text>
       <CourseSelector
         updateCourseSelection={updateCourseSelection}
       ></CourseSelector>
+
       <Text>Selected Course</Text>
       {courseSection ? (
         <>
@@ -82,6 +84,15 @@ export default function Home() {
       <Button onClick={() => setColorScheme("light")}>Light</Button>
       <Button onClick={() => setColorScheme("dark")}>Dark</Button>
       <Button onClick={() => setColorScheme("auto")}>Auto</Button>
+      <iframe
+        className="w-96"
+        style={{ borderRadius: "12px" }}
+        src="https://open.spotify.com/embed/artist/7bu3H8JO7d0UbMoVzbo70s?utm_source=generator"
+        width="100%"
+        height="152"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      ></iframe>
     </div>
   );
 }

@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { createTheme, MantineProvider, ColorSchemeScript } from "@mantine/core";
+import {
+  createTheme,
+  MantineProvider,
+  ColorSchemeScript,
+  MantineThemeOverride,
+} from "@mantine/core";
 import "./globals.css";
 import "@mantine/core/styles.css";
 import Header from "@components/Header";
@@ -23,7 +28,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className="antialiased flex flex-col h-dscreen">
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} defaultColorScheme="dark">
           <Header />
           {children}
         </MantineProvider>

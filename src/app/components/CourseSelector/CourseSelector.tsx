@@ -190,54 +190,44 @@ export default function CourseSelector(props: CourseSelectorProps) {
   }, [section]);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Text size="xl">Department Selector</Text>
-      <div style={{ marginTop: "20px" }}></div>
-      <Text>Matched Department: {department ?? "null"}</Text>
+    <div className="flex flex-col space-y-8 lg:flex-row lg:flex-wrap lg:gap-8 lg:space-y-0">
+      <div className="w-60">
+        <CourseSelectorAutocomplete
+          label="Department"
+          placeholder={departmentPlaceholder}
+          data={departments}
+          valid={department !== null}
+          onChange={onChangeDepartment}
+          error={departmentError}
+          setError={setDepartmentError}
+        />
+      </div>
 
-      <CourseSelectorAutocomplete
-        label="Department"
-        placeholder={departmentPlaceholder}
-        data={departments}
-        valid={department !== null}
-        onChange={onChangeDepartment}
-        error={departmentError}
-        setError={setDepartmentError}
-      />
+      <div className="w-60">
+        <CourseSelectorAutocomplete
+          label="Number"
+          placeholder={courseNumberPlaceholder}
+          data={courseNumbers}
+          valid={courseNumber !== null}
+          onChange={onChangeCourseNumber}
+          disabled={department === null}
+          error={courseNumberError}
+          setError={setCourseNumberError}
+        />
+      </div>
 
-      <div style={{ marginTop: "200px" }}></div>
-
-      <Text size="xl">Number Selector</Text>
-      <div style={{ marginTop: "20px" }}></div>
-      <Text>Matched Course: {courseNumber ?? "null"}</Text>
-
-      <CourseSelectorAutocomplete
-        label="Number"
-        placeholder={courseNumberPlaceholder}
-        data={courseNumbers}
-        valid={courseNumber !== null}
-        onChange={onChangeCourseNumber}
-        disabled={department === null}
-        error={courseNumberError}
-        setError={setCourseNumberError}
-      />
-
-      <div style={{ marginTop: "200px" }}></div>
-
-      <Text size="xl">Section Selector</Text>
-      <div style={{ marginTop: "20px" }}></div>
-      <Text>Matched Section: {section ?? "null"}</Text>
-
-      <CourseSelectorAutocomplete
-        label="Section"
-        placeholder={sectionPlaceholder}
-        data={sections}
-        valid={section !== null}
-        onChange={onChangeSection}
-        disabled={courseNumber === null}
-        error={sectionError}
-        setError={setSectionError}
-      />
+      <div className="w-60">
+        <CourseSelectorAutocomplete
+          label="Section"
+          placeholder={sectionPlaceholder}
+          data={sections}
+          valid={section !== null}
+          onChange={onChangeSection}
+          disabled={courseNumber === null}
+          error={sectionError}
+          setError={setSectionError}
+        />
+      </div>
     </div>
   );
 }
