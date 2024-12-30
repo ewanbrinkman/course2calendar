@@ -12,7 +12,7 @@ interface CourseSelectorProps {
   }) => void;
 }
 
-const LOADING_TEXT = "Loading... (refresh if hangs)";
+const LOADING_TEXT = "Loading...";
 
 export default function CourseSelector(props: CourseSelectorProps) {
   const [departmentError, setDepartmentError] = useState<string | null>(null);
@@ -36,6 +36,10 @@ export default function CourseSelector(props: CourseSelectorProps) {
   );
 
   const onChangeDepartment = (value: string) => {
+    if (department === value) {
+      return;
+    }
+
     if (departments && departments.includes(value)) {
       setDepartment(value);
       setCourseNumbers(undefined);
@@ -45,6 +49,10 @@ export default function CourseSelector(props: CourseSelectorProps) {
   };
 
   const onChangeCourseNumber = (value: string) => {
+    if (courseNumber === value) {
+      return;
+    }
+
     if (courseNumbers && courseNumbers.includes(value)) {
       setCourseNumber(value);
       setSections(undefined);
@@ -54,6 +62,10 @@ export default function CourseSelector(props: CourseSelectorProps) {
   };
 
   const onChangeSection = (value: string) => {
+    if (section === value) {
+      return;
+    }
+
     if (sections && sections.includes(value)) {
       setSection(value);
     } else {
