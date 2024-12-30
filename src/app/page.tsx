@@ -6,7 +6,7 @@ import courseApiWrapper, { CourseSection } from "course-api-wrapper";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { setColorScheme, clearColorScheme } = useMantineColorScheme();
+  // const { setColorScheme, clearColorScheme } = useMantineColorScheme();
 
   const [courseSelection, setCourseSelection] = useState<{
     department: string | null;

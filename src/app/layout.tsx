@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import {
-  createTheme,
-  MantineProvider,
-  ColorSchemeScript,
-  MantineThemeOverride,
-} from "@mantine/core";
+import { createTheme, MantineProvider, ColorSchemeScript } from "@mantine/core";
 import "./globals.css";
 import "@mantine/core/styles.css";
 import Header from "@components/Header";
