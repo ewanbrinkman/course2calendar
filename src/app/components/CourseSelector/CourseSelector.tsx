@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Text } from "@mantine/core";
 import courseApiWrapper from "course-api-wrapper";
 import CourseSelectorAutocomplete from "@components/CourseSelector/CourseSelectorAutocomplete";
 
@@ -12,6 +11,8 @@ interface CourseSelectorProps {
     section: string | null;
   }) => void;
 }
+
+const LOADING_TEXT = "Loading... (refresh if hangs)";
 
 export default function CourseSelector(props: CourseSelectorProps) {
   const [departmentError, setDepartmentError] = useState<string | null>(null);
@@ -143,7 +144,7 @@ export default function CourseSelector(props: CourseSelectorProps) {
 
   const departmentPlaceholder = useMemo(() => {
     if (departments === undefined) {
-      return "Loading...";
+      return LOADING_TEXT;
     } else if (departments === null) {
       return "API Error";
     } else if (departments.length === 0) {
@@ -157,7 +158,7 @@ export default function CourseSelector(props: CourseSelectorProps) {
     if (department === null) {
       return "Select A Department First";
     } else if (courseNumbers === undefined) {
-      return "Loading...";
+      return LOADING_TEXT;
     } else if (courseNumbers === null) {
       return "API Error";
     } else if (courseNumbers.length === 0) {
@@ -171,7 +172,7 @@ export default function CourseSelector(props: CourseSelectorProps) {
     if (courseNumber === null) {
       return "Select A Number First";
     } else if (sections === undefined) {
-      return "Loading...";
+      return LOADING_TEXT;
     } else if (sections === null) {
       return "API Error";
     } else if (sections.length === 0) {

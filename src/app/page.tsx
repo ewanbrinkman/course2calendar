@@ -1,7 +1,7 @@
 "use client";
 
 import CourseSelector from "@components/CourseSelector";
-import { useMantineColorScheme, Text, Button } from "@mantine/core";
+import { useMantineColorScheme, Text, Button, Divider } from "@mantine/core";
 import courseApiWrapper, { CourseSection } from "course-api-wrapper";
 import { useEffect, useState } from "react";
 
@@ -59,40 +59,19 @@ export default function Home() {
 
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
-      <Text>Add A Course</Text>
+      <Text size="xl">Search for a Course</Text>
+
       <CourseSelector
         updateCourseSelection={updateCourseSelection}
       ></CourseSelector>
 
-      <Text>Selected Course</Text>
-      {courseSection ? (
-        <>
-          <Text>Name: {courseSection.title}</Text>
-          <Text>
-            Instructor{courseSection.instructors.length > 1 ? "s" : ""}:{" "}
-            {courseSection.instructors
-              .map((instructor) => instructor.commonName)
-              .join(", ")}
-          </Text>
-          <Text>Department: {courseSection.department}</Text>
-          <Text>Number: {courseSection.number}</Text>
-          <Text>Section: {courseSection.section}</Text>
-        </>
-      ) : (
-        <Text>No course selected or course not found.</Text>
-      )}
-      <Button onClick={() => setColorScheme("light")}>Light</Button>
-      <Button onClick={() => setColorScheme("dark")}>Dark</Button>
-      <Button onClick={() => setColorScheme("auto")}>Auto</Button>
-      <iframe
-        className="w-96"
-        style={{ borderRadius: "12px" }}
-        src="https://open.spotify.com/embed/artist/7bu3H8JO7d0UbMoVzbo70s?utm_source=generator"
-        width="100%"
-        height="152"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-      ></iframe>
+      <Button>Add Course</Button>
+
+      <Divider className="w-full" />
+
+      <Text size="xl">Added Courses</Text>
+
+      <Button>Download Calendar File</Button>
     </div>
   );
 }
