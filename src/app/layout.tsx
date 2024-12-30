@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { createTheme, MantineProvider, ColorSchemeScript } from "@mantine/core";
 import "./globals.css";
 import "@mantine/core/styles.css";
+import Header from "@components/Header";
 
 const theme = createTheme({});
 
@@ -22,7 +23,10 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className="antialiased flex flex-col h-dscreen">
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <Header />
+          {children}
+        </MantineProvider>
         <Analytics />
       </body>
     </html>

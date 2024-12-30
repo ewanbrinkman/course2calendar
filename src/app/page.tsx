@@ -1,12 +1,13 @@
 "use client";
 
-import Container from "@components/Common/Container";
 import CourseSelector from "@components/CourseSelector";
-import { Text } from "@mantine/core";
+import { useMantineColorScheme, Text, Button } from "@mantine/core";
 import courseApiWrapper, { CourseSection } from "course-api-wrapper";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const { setColorScheme, clearColorScheme } = useMantineColorScheme();
+
   const [courseSelection, setCourseSelection] = useState<{
     department: string | null;
     courseNumber: string | null;
@@ -78,6 +79,9 @@ export default function Home() {
       ) : (
         <Text>No course selected or course not found.</Text>
       )}
+      <Button onClick={() => setColorScheme("light")}>Light</Button>
+      <Button onClick={() => setColorScheme("dark")}>Dark</Button>
+      <Button onClick={() => setColorScheme("auto")}>Auto</Button>
     </div>
   );
 }
