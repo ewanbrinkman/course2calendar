@@ -1,15 +1,15 @@
-import { Text, Divider, Anchor, Code } from "@mantine/core";
+import { Title, Text, Divider, Anchor, Code } from "@mantine/core";
 
 export default function Home() {
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8 text-center">
-      <Text className="text-4xl">Info</Text>
+      <Title size="h1">Info</Title>
       <Text>Easily add your courses to your calendar!</Text>
       <Text>Made by Ewan Brinkman.</Text>
 
       <Divider className="w-full" />
 
-      <Text className="text-4xl">Source Code</Text>
+      <Title size="h1">Source Code</Title>
       <Text>
         Source code is on GitHub{" "}
         <Anchor href="https://github.com/ewanbrinkman/course2calendar">
@@ -27,7 +27,7 @@ export default function Home() {
 
       <Divider className="w-full" />
 
-      <Text className="text-4xl">Getting Course Data</Text>
+      <Title size="h1">Getting Course Data</Title>
       <Text>
         I made an npm package that acts as a wrapper for the course API. You can
         install it with <Code>npm install course-api-wrapper</Code>. Both of the

@@ -13,6 +13,8 @@ interface CourseSelectorProps {
 }
 
 const LOADING_TEXT = "Loading...";
+const NO_OFFERINGS_TEXT = "No Offerings";
+const API_ERROR_TEXT = "API Error";
 
 export default function CourseSelector(props: CourseSelectorProps) {
   const [departmentError, setDepartmentError] = useState<string | null>(null);
@@ -158,9 +160,9 @@ export default function CourseSelector(props: CourseSelectorProps) {
     if (departments === undefined) {
       return LOADING_TEXT;
     } else if (departments === null) {
-      return "API Error";
+      return API_ERROR_TEXT;
     } else if (departments.length === 0) {
-      return "None Available";
+      return NO_OFFERINGS_TEXT;
     } else {
       return `Select A Department (ex. ${departments[0]})`;
     }
@@ -172,9 +174,9 @@ export default function CourseSelector(props: CourseSelectorProps) {
     } else if (courseNumbers === undefined) {
       return LOADING_TEXT;
     } else if (courseNumbers === null) {
-      return "API Error";
+      return API_ERROR_TEXT;
     } else if (courseNumbers.length === 0) {
-      return "None Available";
+      return NO_OFFERINGS_TEXT;
     } else {
       return `Select A Number (ex. ${courseNumbers[0]})`;
     }
@@ -186,9 +188,9 @@ export default function CourseSelector(props: CourseSelectorProps) {
     } else if (sections === undefined) {
       return LOADING_TEXT;
     } else if (sections === null) {
-      return "API Error";
+      return API_ERROR_TEXT;
     } else if (sections.length === 0) {
-      return "None Available";
+      return NO_OFFERINGS_TEXT;
     } else {
       return `Select A Number (ex. ${sections[0]})`;
     }

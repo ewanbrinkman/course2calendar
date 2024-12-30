@@ -2,12 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { Container, Group, Text } from "@mantine/core";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
 
 const links = [
   { link: "/", label: "Home" },
-  { link: "/tutorial", label: "Tutorial" },
   { link: "/about", label: "About" },
 ];
 

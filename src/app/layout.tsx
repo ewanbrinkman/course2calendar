@@ -23,7 +23,7 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body className="antialiased flex flex-col h-dscreen">
-        <MantineProvider theme={theme} defaultColorScheme="dark">
+        <MantineProvider theme={theme} forceColorScheme="dark">
           <Header />
           {children}
         </MantineProvider>
