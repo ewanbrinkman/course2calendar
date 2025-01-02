@@ -113,6 +113,11 @@ export default function Home() {
     fetchCourseSection();
   }, [courseSelection]);
 
+  useEffect(() => {
+    // Remove all selected courses when the year/term changes.
+    setSelectedCourses([]);
+  }, [termSelection]);
+
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
       <Title size="h2">Select A Year and Term</Title>

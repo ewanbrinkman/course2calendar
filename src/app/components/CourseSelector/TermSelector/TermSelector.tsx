@@ -13,7 +13,8 @@ interface TermSelectorProps {
 
 const LOADING_TEXT = "Loading...";
 const NO_OFFERINGS_TEXT = "No Offerings";
-const API_ERROR_TEXT = "API Error";
+// const API_ERROR_TEXT = "API Error";
+const API_ERROR_TEXT = "";
 
 export default function TermSelector(props: TermSelectorProps) {
   const [yearError, setYearError] = useState<string | null>(null);
