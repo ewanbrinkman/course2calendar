@@ -1,22 +1,26 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import courseApiWrapper from "course-api-wrapper";
+import courseApiWrapper, { Term } from "course-api-wrapper";
 import CourseSelectorAutocomplete from "@components/CourseSelector/CourseSelectorAutocomplete";
 
-interface CourseSelectorProps {
+interface CourseSectionSelectorProps {
   updateCourseSelection: (courseSelection: {
     department: string | null;
     courseNumber: string | null;
     section: string | null;
   }) => void;
+  year: number | null;
+  term: Term | null;
 }
 
 const LOADING_TEXT = "Loading...";
 const NO_OFFERINGS_TEXT = "No Offerings";
 const API_ERROR_TEXT = "API Error";
 
-export default function CourseSelector(props: CourseSelectorProps) {
+export default function CourseSectionSelector(
+  props: CourseSectionSelectorProps
+) {
   const [departmentError, setDepartmentError] = useState<string | null>(null);
   const [department, setDepartment] = useState<string | null>(null);
   const [departments, setDepartments] = useState<string[] | null | undefined>(
@@ -37,12 +41,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
     undefined
   );
 
-  const onChangeDepartment = (value: string) => {
+  const onChangeDepartment = (value: string | null) => {
     if (department === value) {
       return;
     }
 
-    if (departments && departments.includes(value)) {
+    if (departments && value && departments.includes(value)) {
       setDepartment(value);
       setCourseNumbers(undefined);
     } else {
@@ -50,12 +54,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
     }
   };
 
-  const onChangeCourseNumber = (value: string) => {
+  const onChangeCourseNumber = (value: string | null) => {
     if (courseNumber === value) {
       return;
     }
 
-    if (courseNumbers && courseNumbers.includes(value)) {
+    if (courseNumbers && value && courseNumbers.includes(value)) {
       setCourseNumber(value);
       setSections(undefined);
     } else {
@@ -63,12 +67,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
     }
   };
 
-  const onChangeSection = (value: string) => {
+  const onChangeSection = (value: string | null) => {
     if (section === value) {
       return;
     }
 
-    if (sections && sections.includes(value)) {
+    if (sections && value && sections.includes(value)) {
       setSection(value);
     } else {
       setSection(null);
@@ -83,8 +87,17 @@ export default function CourseSelector(props: CourseSelectorProps) {
     });
 
     const fetchDepartments = async () => {
+      if (props.year === null || props.term === null) {
+        setDepartment(null);
+        setDepartments(undefined);
+
+        setDepartmentError(null);
+
+        return;
+      }
+
       try {
-        const data = await courseApiWrapper.departments();
+        const data = await courseApiWrapper.departments(props.year, props.term);
         setDepartments(data.map((department) => department.id.toUpperCase()));
       } catch (err) {
         console.error("Failed to fetch departments:", err);
@@ -93,7 +106,7 @@ export default function CourseSelector(props: CourseSelectorProps) {
     };
 
     fetchDepartments();
-  }, []);
+  }, [props.year, props.term]);
 
   useEffect(() => {
     props.updateCourseSelection({
@@ -103,7 +116,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
     });
 
     const fetchCourseNumbers = async () => {
-      if (department === null || department === undefined) {
+      if (
+        props.year === null ||
+        props.term === null ||
+        department === null ||
+        department === undefined
+      ) {
         setCourseNumber(null);
         setCourseNumbers(undefined);
 
@@ -113,7 +131,11 @@ export default function CourseSelector(props: CourseSelectorProps) {
       }
 
       try {
-        const data = await courseApiWrapper.departmentCourseNumbers(department);
+        const data = await courseApiWrapper.departmentCourseNumbers(
+          department,
+          props.year,
+          props.term
+        );
         setCourseNumbers(data);
       } catch (err) {
         console.error("Failed to fetch courses:", err);
@@ -127,6 +149,8 @@ export default function CourseSelector(props: CourseSelectorProps) {
   useEffect(() => {
     const fetchSections = async () => {
       if (
+        props.year === null ||
+        props.term === null ||
         department === null ||
         department === undefined ||
         courseNumber === null ||
@@ -141,7 +165,12 @@ export default function CourseSelector(props: CourseSelectorProps) {
       }
 
       try {
-        const data = await courseApiWrapper.course(department, courseNumber);
+        const data = await courseApiWrapper.course(
+          department,
+          courseNumber,
+          props.year,
+          props.term
+        );
         setSections(
           data.sectionNumbers.map((sectionNumber) =>
             sectionNumber.toUpperCase()
@@ -157,7 +186,9 @@ export default function CourseSelector(props: CourseSelectorProps) {
   }, [courseNumber]);
 
   const departmentPlaceholder = useMemo(() => {
-    if (departments === undefined) {
+    if (props.year === null || props.term === null) {
+      return "Select A Year And Term First";
+    } else if (departments === undefined) {
       return LOADING_TEXT;
     } else if (departments === null) {
       return API_ERROR_TEXT;
@@ -204,17 +235,29 @@ export default function CourseSelector(props: CourseSelectorProps) {
     props.updateCourseSelection({ department, courseNumber, section });
   }, [section]);
 
+  const getData = (data: string[] | null | undefined) => {
+    if (data) {
+      return data.map((dataValue) => {
+        return { value: dataValue, valueAsString: dataValue };
+      });
+    } else {
+      return data;
+    }
+  };
+
   return (
     <div className="flex flex-col space-y-8 lg:flex-row lg:flex-wrap lg:gap-8 lg:space-y-0">
       <div className="w-60">
         <CourseSelectorAutocomplete
           label="Department"
           placeholder={departmentPlaceholder}
-          data={departments}
+          data={getData(departments)}
           valid={department !== null}
           onChange={onChangeDepartment}
+          disabled={props.year === null || props.term === null}
           error={departmentError}
           setError={setDepartmentError}
+          formatValue={String.prototype.toUpperCase}
         />
       </div>
 
@@ -222,12 +265,13 @@ export default function CourseSelector(props: CourseSelectorProps) {
         <CourseSelectorAutocomplete
           label="Number"
           placeholder={courseNumberPlaceholder}
-          data={courseNumbers}
+          data={getData(courseNumbers)}
           valid={courseNumber !== null}
           onChange={onChangeCourseNumber}
           disabled={department === null}
           error={courseNumberError}
           setError={setCourseNumberError}
+          formatValue={String.prototype.toUpperCase}
         />
       </div>
 
@@ -235,12 +279,13 @@ export default function CourseSelector(props: CourseSelectorProps) {
         <CourseSelectorAutocomplete
           label="Section"
           placeholder={sectionPlaceholder}
-          data={sections}
+          data={getData(sections)}
           valid={section !== null}
           onChange={onChangeSection}
           disabled={courseNumber === null}
           error={sectionError}
           setError={setSectionError}
+          formatValue={String.prototype.toUpperCase}
         />
       </div>
     </div>

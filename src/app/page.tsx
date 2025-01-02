@@ -10,11 +10,19 @@ import {
   Title,
 } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
-import CourseSelector from "@components/CourseSelector";
+import CourseSectionSelector from "@components/CourseSelector/CourseSectionSelector";
+import TermSelector from "@components/CourseSelector/TermSelector";
 import { useEffect, useState } from "react";
-import courseApiWrapper, { CourseSection } from "course-api-wrapper";
+import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
 
 export default function Home() {
+  const [termSelection, setTermSelection] = useState<{
+    year: number | null;
+    term: Term | null;
+  }>({
+    year: null,
+    term: null,
+  });
   const [courseSelection, setCourseSelection] = useState<{
     department: string | null;
     courseNumber: string | null;
@@ -37,6 +45,13 @@ export default function Home() {
     section: string | null;
   }) => {
     setCourseSelection(courseSelection);
+  };
+
+  const updateTermSelection = (termSelection: {
+    year: number | null;
+    term: Term | null;
+  }) => {
+    setTermSelection(termSelection);
   };
 
   const addCourse = () => {
@@ -69,6 +84,8 @@ export default function Home() {
   useEffect(() => {
     const fetchCourseSection = async () => {
       if (
+        !termSelection.year ||
+        !termSelection.term ||
         !courseSelection.department ||
         !courseSelection.courseNumber ||
         !courseSelection.section
@@ -82,7 +99,9 @@ export default function Home() {
         const data = await courseApiWrapper.courseSection(
           courseSelection.department,
           courseSelection.courseNumber,
-          courseSelection.section
+          courseSelection.section,
+          termSelection.year,
+          termSelection.term
         );
         setCourseSection(data);
       } catch (err) {
@@ -96,15 +115,19 @@ export default function Home() {
 
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
-      <Title size="h2">Select Year and Term</Title>
+      <Title size="h2">Select A Year and Term</Title>
+
+      <TermSelector updateTermSelection={updateTermSelection} />
 
       <Divider className="w-full" />
 
       <Title size="h2">Search for a Course</Title>
 
-      <CourseSelector
+      <CourseSectionSelector
+        year={termSelection.year}
+        term={termSelection.term}
         updateCourseSelection={updateCourseSelection}
-      ></CourseSelector>
+      />
 
       <Button
         onClick={addCourse}

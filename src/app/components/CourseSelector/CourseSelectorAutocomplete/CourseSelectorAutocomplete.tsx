@@ -1,19 +1,20 @@
 import { Autocomplete } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-interface CourseSelectorAutocompleteProps {
+interface CourseSelectorAutocompleteProps<T> {
   label: string;
   placeholder: string;
-  data: string[] | null | undefined;
+  data: { value: T; valueAsString: string }[] | null | undefined;
   valid: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: T | null) => void;
   disabled?: boolean;
   error: string | null;
   setError: (value: string | null) => void;
+  formatValue: (value: string) => string;
 }
 
-export default function CourseSelectorAutocomplete(
-  props: CourseSelectorAutocompleteProps
+export default function CourseSelectorAutocomplete<T>(
+  props: CourseSelectorAutocompleteProps<T>
 ) {
   const [input, setInput] = useState<string>("");
 
@@ -25,15 +26,23 @@ export default function CourseSelectorAutocomplete(
     }
   }, [props.data]);
 
-  const formatValue = (value: string) => {
-    return value.toUpperCase();
-  };
-
   const onChange = (value: string) => {
-    const formattedValue = formatValue(value);
+    if (props.data === undefined) {
+      return;
+    }
+
+    const formattedValue = props.formatValue(value);
 
     setInput(formattedValue);
-    props.onChange(formattedValue);
+
+    if (props.data === null) {
+      return;
+    }
+
+    props.onChange(
+      props.data.find((valueData) => valueData.valueAsString === formattedValue)
+        ?.value ?? null
+    );
   };
 
   const onBlur = () => {
@@ -45,7 +54,9 @@ export default function CourseSelectorAutocomplete(
   const onFocus = () => {
     if (props.error !== null) {
       setInput("");
-      props.setError(null);
+      if (props.data !== null) {
+        props.setError(null);
+      }
     }
   };
 
@@ -53,7 +64,7 @@ export default function CourseSelectorAutocomplete(
     <Autocomplete
       label={props.label}
       placeholder={props.placeholder}
-      data={props.data || []}
+      data={props.data?.map((valueData) => valueData.valueAsString) || []}
       value={input}
       onChange={onChange}
       onBlur={onBlur}

@@ -50,7 +50,7 @@ export default function Home() {
 
       <Divider className="w-full" />
 
-      <Text>Obligatory "The Cure" Plug:</Text>
+      <Text>Obligatory Plug of The Cure:</Text>
       <iframe
         className="rounded-xl w-72 sm:w-96"
         src="https://open.spotify.com/embed/artist/7bu3H8JO7d0UbMoVzbo70s?utm_source=generator"
