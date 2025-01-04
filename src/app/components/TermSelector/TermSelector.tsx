@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import courseApiWrapper, { Term } from "course-api-wrapper";
 import CourseSelectorAutocomplete from "@components/CourseSelector/CourseSelectorAutocomplete";
+import TermSelectorCombobox from "@components/TermSelector/TermSelectorCombobox";
 
 interface TermSelectorProps {
   updateTermSelection: (term: {
@@ -154,30 +155,11 @@ export default function TermSelector(props: TermSelectorProps) {
   return (
     <div className="flex flex-col space-y-8 lg:flex-row lg:flex-wrap lg:gap-8 lg:space-y-0">
       <div className="w-60">
-        <CourseSelectorAutocomplete
-          label="Year"
-          placeholder={yearPlaceholder}
-          data={getYearData}
-          valid={year !== null}
-          onChange={onChangeYear}
-          error={yearError}
-          setError={setYearError}
-          formatValue={(value) => value}
-        />
+        <TermSelectorCombobox />
       </div>
 
       <div className="w-60">
-        <CourseSelectorAutocomplete
-          label="Term"
-          placeholder={termPlaceholder}
-          data={getTermData}
-          valid={term !== null}
-          onChange={onChangeTerm}
-          disabled={year === null}
-          error={termError}
-          setError={setTermError}
-          formatValue={String.prototype.toLowerCase}
-        />
+        <TermSelectorCombobox />
       </div>
     </div>
   );

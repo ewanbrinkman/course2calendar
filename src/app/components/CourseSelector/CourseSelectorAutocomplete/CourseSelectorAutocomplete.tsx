@@ -1,20 +1,19 @@
 import { Autocomplete } from "@mantine/core";
 import { useEffect, useState } from "react";
 
-interface CourseSelectorAutocompleteProps<T> {
+interface CourseSelectorAutocompleteProps {
   label: string;
   placeholder: string;
-  data: { value: T; valueAsString: string }[] | null | undefined;
+  data: string[] | null | undefined;
   valid: boolean;
-  onChange: (value: T | null) => void;
+  onChange: (value: string) => void;
   disabled?: boolean;
   error: string | null;
   setError: (value: string | null) => void;
-  formatValue: (value: string) => string;
 }
 
-export default function CourseSelectorAutocomplete<T>(
-  props: CourseSelectorAutocompleteProps<T>
+export default function CourseSelectorAutocomplete(
+  props: CourseSelectorAutocompleteProps
 ) {
   const [input, setInput] = useState<string>("");
 
@@ -26,12 +25,16 @@ export default function CourseSelectorAutocomplete<T>(
     }
   }, [props.data]);
 
+  const formatValue = (value: string) => {
+    return value.toUpperCase();
+  };
+
   const onChange = (value: string) => {
     if (props.data === undefined) {
       return;
     }
 
-    const formattedValue = props.formatValue(value);
+    const formattedValue = formatValue(value);
 
     setInput(formattedValue);
 
@@ -39,10 +42,7 @@ export default function CourseSelectorAutocomplete<T>(
       return;
     }
 
-    props.onChange(
-      props.data.find((valueData) => valueData.valueAsString === formattedValue)
-        ?.value ?? null
-    );
+    props.onChange(formattedValue);
   };
 
   const onBlur = () => {
@@ -64,7 +64,7 @@ export default function CourseSelectorAutocomplete<T>(
     <Autocomplete
       label={props.label}
       placeholder={props.placeholder}
-      data={props.data?.map((valueData) => valueData.valueAsString) || []}
+      data={props.data || []}
       value={input}
       onChange={onChange}
       onBlur={onBlur}

@@ -10,8 +10,8 @@ import {
   Title,
 } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
-import CourseSectionSelector from "@components/CourseSelector/CourseSectionSelector";
-import TermSelector from "@components/CourseSelector/TermSelector";
+import CourseSectionSelector from "@/app/components/CourseSelector";
+import TermSelector from "@/app/components/TermSelector";
 import { useEffect, useState } from "react";
 import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
 
@@ -114,7 +114,7 @@ export default function Home() {
   }, [courseSelection]);
 
   useEffect(() => {
-    // Remove all selected courses when the year/term changes.
+    // Remove all selected courses when the year or term changes.
     setSelectedCourses([]);
   }, [termSelection]);
 

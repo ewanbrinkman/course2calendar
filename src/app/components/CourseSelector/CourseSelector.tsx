@@ -16,7 +16,6 @@ interface CourseSectionSelectorProps {
 
 const LOADING_TEXT = "Loading...";
 const NO_OFFERINGS_TEXT = "No Offerings";
-// const API_ERROR_TEXT = "API Error";
 const API_ERROR_TEXT = "";
 
 export default function CourseSectionSelector(
@@ -42,12 +41,12 @@ export default function CourseSectionSelector(
     undefined
   );
 
-  const onChangeDepartment = (value: string | null) => {
+  const onChangeDepartment = (value: string) => {
     if (department === value) {
       return;
     }
 
-    if (departments && value && departments.includes(value)) {
+    if (departments && departments.includes(value)) {
       setDepartment(value);
       setCourseNumbers(undefined);
     } else {
@@ -55,12 +54,12 @@ export default function CourseSectionSelector(
     }
   };
 
-  const onChangeCourseNumber = (value: string | null) => {
+  const onChangeCourseNumber = (value: string) => {
     if (courseNumber === value) {
       return;
     }
 
-    if (courseNumbers && value && courseNumbers.includes(value)) {
+    if (courseNumbers && courseNumbers.includes(value)) {
       setCourseNumber(value);
       setSections(undefined);
     } else {
@@ -68,12 +67,12 @@ export default function CourseSectionSelector(
     }
   };
 
-  const onChangeSection = (value: string | null) => {
+  const onChangeSection = (value: string) => {
     if (section === value) {
       return;
     }
 
-    if (sections && value && sections.includes(value)) {
+    if (sections && sections.includes(value)) {
       setSection(value);
     } else {
       setSection(null);
@@ -236,29 +235,18 @@ export default function CourseSectionSelector(
     props.updateCourseSelection({ department, courseNumber, section });
   }, [section]);
 
-  const getData = (data: string[] | null | undefined) => {
-    if (data) {
-      return data.map((dataValue) => {
-        return { value: dataValue, valueAsString: dataValue };
-      });
-    } else {
-      return data;
-    }
-  };
-
   return (
     <div className="flex flex-col space-y-8 lg:flex-row lg:flex-wrap lg:gap-8 lg:space-y-0">
       <div className="w-60">
         <CourseSelectorAutocomplete
           label="Department"
           placeholder={departmentPlaceholder}
-          data={getData(departments)}
+          data={departments}
           valid={department !== null}
           onChange={onChangeDepartment}
           disabled={props.year === null || props.term === null}
           error={departmentError}
           setError={setDepartmentError}
-          formatValue={String.prototype.toUpperCase}
         />
       </div>
 
@@ -266,13 +254,12 @@ export default function CourseSectionSelector(
         <CourseSelectorAutocomplete
           label="Number"
           placeholder={courseNumberPlaceholder}
-          data={getData(courseNumbers)}
+          data={courseNumbers}
           valid={courseNumber !== null}
           onChange={onChangeCourseNumber}
           disabled={department === null}
           error={courseNumberError}
           setError={setCourseNumberError}
-          formatValue={String.prototype.toUpperCase}
         />
       </div>
 
@@ -280,13 +267,12 @@ export default function CourseSectionSelector(
         <CourseSelectorAutocomplete
           label="Section"
           placeholder={sectionPlaceholder}
-          data={getData(sections)}
+          data={sections}
           valid={section !== null}
           onChange={onChangeSection}
           disabled={courseNumber === null}
           error={sectionError}
           setError={setSectionError}
-          formatValue={String.prototype.toUpperCase}
         />
       </div>
     </div>
