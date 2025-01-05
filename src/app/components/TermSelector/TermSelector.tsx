@@ -134,7 +134,8 @@ export default function TermSelector(props: TermSelectorProps) {
     } else if (terms.length === 0) {
       return NO_OFFERINGS_TEXT;
     } else {
-      const exampleTerm = terms[terms.length - 1];
+      const exampleTerm =
+        terms[terms.length > 1 ? terms.length - 2 : terms.length - 1];
       return `Select A Term (ex. ${
         exampleTerm.charAt(0).toUpperCase() + exampleTerm.slice(1)
       })`;

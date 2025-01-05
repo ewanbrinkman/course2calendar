@@ -86,6 +86,13 @@ export default function CourseSectionSelector(
       section: null,
     });
 
+    setDepartment(null);
+    setDepartments(undefined);
+    setCourseNumber(null);
+    setCourseNumbers(undefined);
+    setSection(null);
+    setSections(undefined);
+
     const fetchDepartments = async () => {
       if (props.year === null || props.term === null) {
         setDepartment(null);
@@ -225,13 +232,9 @@ export default function CourseSectionSelector(
     } else {
       return `Select A Number (ex. ${sections[0]})`;
     }
-  }, [courseNumbers, sections]);
+  }, [courseNumber, sections]);
 
   useEffect(() => {
-    if (!department || !courseNumber || !section) {
-      return;
-    }
-
     props.updateCourseSelection({ department, courseNumber, section });
   }, [section]);
 
@@ -244,7 +247,12 @@ export default function CourseSectionSelector(
           data={departments}
           valid={department !== null}
           onChange={onChangeDepartment}
-          disabled={props.year === null || props.term === null}
+          disabled={
+            !props.year ||
+            !props.term ||
+            !departments ||
+            departments.length === 0
+          }
           error={departmentError}
           setError={setDepartmentError}
         />
@@ -257,7 +265,7 @@ export default function CourseSectionSelector(
           data={courseNumbers}
           valid={courseNumber !== null}
           onChange={onChangeCourseNumber}
-          disabled={department === null}
+          disabled={!department || !courseNumbers || courseNumbers.length === 0}
           error={courseNumberError}
           setError={setCourseNumberError}
         />
@@ -270,7 +278,7 @@ export default function CourseSectionSelector(
           data={sections}
           valid={section !== null}
           onChange={onChangeSection}
-          disabled={courseNumber === null}
+          disabled={!courseNumber || !sections || sections.length === 0}
           error={sectionError}
           setError={setSectionError}
         />

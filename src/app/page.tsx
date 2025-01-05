@@ -12,7 +12,7 @@ import {
 import { IconTrash } from "@tabler/icons-react";
 import CourseSectionSelector from "@/app/components/CourseSelector";
 import TermSelector from "@/app/components/TermSelector";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
 
 export default function Home() {
@@ -74,7 +74,7 @@ export default function Home() {
       { id: Date.now(), course: courseSection },
     ]);
 
-    setCourseSelection({ department: null, courseNumber: null, section: null });
+    // setCourseSelection({ department: null, courseNumber: null, section: null });
   };
 
   const removeCourse = (id: number) => {
@@ -118,6 +118,29 @@ export default function Home() {
     setSelectedCourses([]);
   }, [termSelection]);
 
+  const addCourseButtonText = useMemo(() => {
+    if (
+      courseSelection &&
+      selectedCourses.some(
+        (item) =>
+          item.course.department === courseSelection.department &&
+          item.course.number === courseSelection.courseNumber &&
+          item.course.section === courseSelection.section
+      )
+    ) {
+      return "Course Already Added";
+    } else if (
+      courseSection === null &&
+      courseSelection.department !== null &&
+      courseSelection.courseNumber !== null &&
+      courseSelection.section !== null
+    ) {
+      return "Loading Course Data...";
+    } else {
+      return "Add Course";
+    }
+  }, [courseSection, courseSelection, selectedCourses]);
+
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
       <Title size="h2">Select A Year and Term</Title>
@@ -126,13 +149,15 @@ export default function Home() {
 
       <Divider className="w-full" />
 
-      <Title size="h2">Search for a Course</Title>
+      <Title size="h2">Search for Courses</Title>
 
       <CourseSectionSelector
         year={termSelection.year}
         term={termSelection.term}
         updateCourseSelection={updateCourseSelection}
       />
+
+      {/* <Text>Found course: {courseSection ? courseSection.title : "None"}</Text> */}
 
       <Button
         onClick={addCourse}
@@ -146,7 +171,7 @@ export default function Home() {
           )
         }
       >
-        Add Course
+        {addCourseButtonText}
       </Button>
 
       <Divider className="w-full" />
