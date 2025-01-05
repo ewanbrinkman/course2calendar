@@ -14,6 +14,7 @@ import CourseSectionSelector from "@/app/components/CourseSelector";
 import TermSelector from "@/app/components/TermSelector";
 import { useEffect, useState, useMemo } from "react";
 import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
+import ical, { ICalCalendarMethod } from "ical-generator";
 
 export default function Home() {
   const [termSelection, setTermSelection] = useState<{
@@ -141,6 +142,33 @@ export default function Home() {
     }
   }, [courseSection, courseSelection, selectedCourses]);
 
+  const downloadCalendarFile = () => {
+    const calendar = ical({ name: "my first iCal" });
+
+    // A method is required for outlook to display event as an invitation
+    calendar.method(ICalCalendarMethod.REQUEST);
+
+    const startTime = new Date();
+    const endTime = new Date();
+    endTime.setHours(startTime.getHours() + 1);
+    calendar.createEvent({
+      start: startTime,
+      end: endTime,
+      summary: "Example Event",
+      description: "It works ;)",
+      location: "my room",
+      url: "http://sebbo.net/",
+    });
+    const calendarBlob = new Blob([calendar.toString()], {
+      type: "text/calendar",
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(calendarBlob);
+    link.download = "courses.ics"; // Name the downloaded file
+    link.click();
+  };
+
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
       <Title size="h2">Select A Year and Term</Title>
@@ -217,9 +245,7 @@ export default function Home() {
 
       <Button
         disabled={selectedCourses.length === 0}
-        onClick={() => {
-          // Implement calendar download functionality here.
-        }}
+        onClick={downloadCalendarFile}
       >
         Download Calendar File
       </Button>
