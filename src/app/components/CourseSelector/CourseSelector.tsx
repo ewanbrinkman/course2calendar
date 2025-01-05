@@ -197,7 +197,7 @@ export default function CourseSectionSelector(
     } else {
       return `Select A Department (ex. ${departments[0]})`;
     }
-  }, [departments]);
+  }, [props.year, props.term, departments]);
 
   const courseNumberPlaceholder = useMemo(() => {
     if (department === null) {

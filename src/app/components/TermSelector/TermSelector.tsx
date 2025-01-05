@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import courseApiWrapper, { Term } from "course-api-wrapper";
-import CourseSelectorAutocomplete from "@components/CourseSelector/CourseSelectorAutocomplete";
 import TermSelectorCombobox from "@components/TermSelector/TermSelectorCombobox";
 
 interface TermSelectorProps {
@@ -26,29 +25,26 @@ export default function TermSelector(props: TermSelectorProps) {
   const [term, setTerm] = useState<Term | null>(null);
   const [terms, setTerms] = useState<Term[] | null | undefined>(undefined);
 
-  const onChangeYear = (value: number | null) => {
-    if (year === value) {
+  const onOptionSubmitYear = (value: string) => {
+    const selectedYear = parseInt(value);
+
+    if (year === selectedYear) {
       return;
     }
 
-    if (years && value && years.includes(value)) {
-      setYear(value);
-      setTerms(undefined);
-    } else {
-      setYear(null);
-    }
+    setYear(selectedYear);
+    setTerms(undefined);
+    setTerm(null);
   };
 
-  const onChangeTerm = (value: Term | null) => {
-    if (term === value) {
+  const onOptionSubmitTerm = (value: string) => {
+    const selectedTerm = value.toLowerCase() as Term;
+
+    if (term === selectedTerm) {
       return;
     }
 
-    if (terms && value && terms.includes(value)) {
-      setTerm(value);
-    } else {
-      setTerm(null);
-    }
+    setTerm(selectedTerm);
   };
 
   useEffect(() => {
@@ -60,7 +56,7 @@ export default function TermSelector(props: TermSelectorProps) {
     const fetchYears = async () => {
       try {
         const data = await courseApiWrapper.years();
-        setYears(data);
+        setYears(data.reverse());
       } catch (err) {
         console.error("Failed to fetch years:", err);
         setYears(null);
@@ -88,7 +84,15 @@ export default function TermSelector(props: TermSelectorProps) {
 
       try {
         const data = await courseApiWrapper.terms(year);
-        setTerms(data);
+
+        const orderMap: Record<Term, number> = {
+          spring: 0,
+          summer: 1,
+          fall: 2,
+        };
+        const sortedTerms = data.sort((a, b) => orderMap[a] - orderMap[b]);
+
+        setTerms(sortedTerms);
       } catch (err) {
         console.error("Failed to fetch courses:", err);
         setTerms(null);
@@ -97,6 +101,16 @@ export default function TermSelector(props: TermSelectorProps) {
 
     fetchTerms();
   }, [year]);
+
+  const yearStrings = useMemo(() => {
+    return years ? years.map((year) => year.toString()) : years;
+  }, [years]);
+
+  const termStrings = useMemo(() => {
+    return terms
+      ? terms.map((term) => term.charAt(0).toUpperCase() + term.slice(1))
+      : terms;
+  }, [terms]);
 
   const yearPlaceholder = useMemo(() => {
     if (years === undefined) {
@@ -120,7 +134,10 @@ export default function TermSelector(props: TermSelectorProps) {
     } else if (terms.length === 0) {
       return NO_OFFERINGS_TEXT;
     } else {
-      return `Select A Number (ex. ${terms[0]})`;
+      const exampleTerm = terms[terms.length - 1];
+      return `Select A Term (ex. ${
+        exampleTerm.charAt(0).toUpperCase() + exampleTerm.slice(1)
+      })`;
     }
   }, [year, terms]);
 
@@ -132,34 +149,22 @@ export default function TermSelector(props: TermSelectorProps) {
     props.updateTermSelection({ year, term });
   }, [term]);
 
-  const getYearData = useMemo(() => {
-    if (years) {
-      return years.map((dataValue) => {
-        return { value: dataValue, valueAsString: dataValue.toString() };
-      });
-    } else {
-      return years;
-    }
-  }, [years]);
-
-  const getTermData = useMemo(() => {
-    if (terms) {
-      return terms.map((dataValue) => {
-        return { value: dataValue, valueAsString: dataValue };
-      });
-    } else {
-      return terms;
-    }
-  }, [terms]);
-
   return (
     <div className="flex flex-col space-y-8 lg:flex-row lg:flex-wrap lg:gap-8 lg:space-y-0">
       <div className="w-60">
-        <TermSelectorCombobox />
+        <TermSelectorCombobox
+          placeholder={yearPlaceholder}
+          data={yearStrings}
+          onOptionSubmit={onOptionSubmitYear}
+        />
       </div>
 
       <div className="w-60">
-        <TermSelectorCombobox />
+        <TermSelectorCombobox
+          placeholder={termPlaceholder}
+          data={termStrings}
+          onOptionSubmit={onOptionSubmitTerm}
+        />
       </div>
     </div>
   );
