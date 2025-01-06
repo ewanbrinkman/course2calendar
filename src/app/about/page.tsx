@@ -4,7 +4,13 @@ export default function Home() {
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8 text-center">
       <Title size="h1">Info</Title>
-      <Text>Easily add your courses to your calendar!</Text>
+      <Text>
+        I used to spend about 10 minutes every term adding my courses to my
+        calendar. I found that a bit annoying - and so spent much more time
+        creating this website - ha! Now, simply add all your courses, then
+        download a file you can import into your calendar with your schedule.
+        Hopefully it saves some of you some time!
+      </Text>
       <Text>Made by Ewan Brinkman.</Text>
 
       <Divider className="w-full" />

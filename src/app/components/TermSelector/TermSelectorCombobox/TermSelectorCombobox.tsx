@@ -94,7 +94,6 @@ export default function TermSelectorCombobox<T>(
               color: "var(--mantine-color-error)",
             },
           }}
-          // style={{ color: "var(--mantine-color-error)" }}
         >
           {error}
         </Text>
