@@ -226,13 +226,13 @@ export default function Home() {
 
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
-      <Title size="h2">Select A Year and Term</Title>
+      <Title size="h2">Select A Year And Term</Title>
 
       <TermSelector updateTermSelection={updateTermSelection} />
 
       <Divider className="w-full" />
 
-      <Title size="h2">Search for Courses</Title>
+      <Title size="h2">Search For Courses</Title>
 
       <CourseSectionSelector
         year={termSelection.year}
@@ -304,6 +304,12 @@ export default function Home() {
       >
         Download Calendar File
       </Button>
+
+      <Divider className="w-full" />
+
+      <Title size="h2">How To Import The Downloaded File To A Calendar</Title>
+
+      <Text>{"Google calendar: Settings >"}</Text>
     </div>
   );
 }
