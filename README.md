@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT
+License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+</div>
+<br />
+<div align="center">
+  <h1 align="center">Course 2 Calendar</h1>
+
+  <p align="center">
+    Add an SFU course schedule to your calendar. This project is not endorsed or supported by Simon Fraser University.
+    <br />
+    Live Project: <a href="https://course2calendar.com"><strong>https://course2calendar.com</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/ewanbrinkman/course2calendar/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/ewanbrinkman/course2calendar/issues">Request Feature</a>
+  </p>
+</div>
+
+<!-- Table of contents. -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+## About The Project
+
+Live Project: [https://course2calendar.com](https://course2calendar.com)
+
+I used to spend about 10 minutes every term adding my courses to my
+calendar. I found that a bit annoying - and so spent much more time
+creating this website - ha! Now, simply add all your courses, then
+download a file you can import into your calendar with your schedule.
+Hopefully it saves some of you some time!
+
+**This project is not endorsed or supported by Simon Fraser University.**
 
 ## Getting Started
 
-First, run the development server:
+Instructions for how to set up locally are below.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- node
+- npm _(comes with node)_
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Clone this repository. For example, if using SSH:
+   ```sh
+   git clone git@github.com:ewanbrinkman/course2calendar.git
+   ```
+2. Go to the directory of `course2calendar`.
+   ```sh
+   cd course2calendar
+   ```
+3. Install NPM packages.
+   ```sh
+   npm install
+   ```
+4. Start the dev server.
+   ```sh
+   npm run dev
+   ```
 
-## Learn More
+For hosting, update `baseUrl` in [src/app/sitemap.ts](src/app/sitemap.ts).
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For suggesting new areas and locations for an area: feel free to open an issue
+[here](https://github.com/ewanbrinkman/course2calendar/issues).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+For code changes: feel free to fork and create a pull request, or open an issue
+[here](https://github.com/ewanbrinkman/course2calendar/issues).
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more
+information.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contact
+
+Ewan Brinkman
+
+Project Link:
+[https://github.com/ewanbrinkman/course2calendar](https://github.com/ewanbrinkman/course2calendar)
+
+<!-- Markdown links and images. -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/ewanbrinkman/course2calendar.svg?style=for-the-badge
+[contributors-url]: https://github.com/ewanbrinkman/course2calendar/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ewanbrinkman/course2calendar.svg?style=for-the-badge
+[forks-url]: https://github.com/ewanbrinkman/course2calendar/network/members
+[stars-shield]: https://img.shields.io/github/stars/ewanbrinkman/course2calendar.svg?style=for-the-badge
+[stars-url]: https://github.com/ewanbrinkman/course2calendar/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ewanbrinkman/course2calendar.svg?style=for-the-badge
+[issues-url]: https://github.com/ewanbrinkman/course2calendar/issues
+[license-shield]: https://img.shields.io/github/license/ewanbrinkman/course2calendar.svg?style=for-the-badge
+[license-url]: https://github.com/ewanbrinkman/course2calendar/blob/main/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/ewan-brinkman
