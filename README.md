@@ -15,7 +15,7 @@ License][license-shield]][license-url]
   <p align="center">
     Add an SFU course schedule to your calendar. This project is not endorsed or supported by Simon Fraser University.
     <br />
-    Live Project: <a href="https://doyouknowthere.com"><strong>https://course2calendar.com</strong></a>
+    Live Project: <a href="https://course2calendar.com"><strong>https://course2calendar.com</strong></a>
     <br />
     <br />
     <a href="https://github.com/ewanbrinkman/course2calendar/issues">Report Bug</a>
@@ -47,7 +47,7 @@ License][license-shield]][license-url]
 
 ## About The Project
 
-Live Project: [https://doyouknowthere.com](https://doyouknowthere.com)
+Live Project: [https://course2calendar.com](https://course2calendar.com)
 
 I used to spend about 10 minutes every term adding my courses to my
 calendar. I found that a bit annoying - and so spent much more time

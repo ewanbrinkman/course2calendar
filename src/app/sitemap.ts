@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "https://course2schedule.com"
+    ? "https://course2calendar.com"
     : `http://localhost:${process.env.PORT || 3000}`;
 
 export default function sitemap(): MetadataRoute.Sitemap {

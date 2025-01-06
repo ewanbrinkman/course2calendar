@@ -10,7 +10,7 @@ const theme = createTheme({});
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "https://course2schedule.com"
+    ? "https://course2calendar.com"
     : `http://localhost:${process.env.PORT || 3000}`;
 
 export const metadata: Metadata = {
