@@ -10,8 +10,9 @@ import {
   Title,
 } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
-import CourseSectionSelector from "@/app/components/CourseSelector";
-import TermSelector from "@/app/components/TermSelector";
+import CourseSectionSelector from "@components/CourseSelector";
+import TermSelector from "@components/TermSelector";
+import ImportTutorial from "@components/ImportTutorial";
 import { useEffect, useState, useMemo } from "react";
 import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
 import ical, {
@@ -307,9 +308,11 @@ export default function Home() {
 
       <Divider className="w-full" />
 
-      <Title size="h2">How To Import The Downloaded File To A Calendar</Title>
+      <Title size="h2" className="text-center">
+        How To Import The Downloaded File To A Calendar
+      </Title>
 
-      <Text>{"Google calendar: Settings >"}</Text>
+      <ImportTutorial />
     </div>
   );
 }
