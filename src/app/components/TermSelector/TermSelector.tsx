@@ -17,11 +17,9 @@ const NO_OFFERINGS_TEXT = "No Offerings";
 const API_ERROR_TEXT = "";
 
 export default function TermSelector(props: TermSelectorProps) {
-  const [yearError, setYearError] = useState<string | null>(null);
   const [year, setYear] = useState<number | null>(null);
   const [years, setYears] = useState<number[] | null | undefined>(undefined);
 
-  const [termError, setTermError] = useState<string | null>(null);
   const [term, setTerm] = useState<Term | null>(null);
   const [terms, setTerms] = useState<Term[] | null | undefined>(undefined);
 
@@ -76,8 +74,6 @@ export default function TermSelector(props: TermSelectorProps) {
       if (year === null || year === undefined) {
         setTerm(null);
         setTerms(undefined);
-
-        setTermError(null);
 
         return;
       }
