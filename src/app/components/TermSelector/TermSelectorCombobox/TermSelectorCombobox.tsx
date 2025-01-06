@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { Input, InputBase, Combobox, useCombobox, Text } from "@mantine/core";
-import classes from "./TermSelectorCombobox.module.css";
 
-interface TermSelectorComboboxProps<T> {
+interface TermSelectorComboboxProps {
   label: string;
   placeholder: string;
   data: string[] | null | undefined;
   onOptionSubmit: (value: string) => void;
 }
 
-export default function TermSelectorCombobox<T>(
-  props: TermSelectorComboboxProps<T>
-) {
+export default function TermSelectorCombobox(props: TermSelectorComboboxProps) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });

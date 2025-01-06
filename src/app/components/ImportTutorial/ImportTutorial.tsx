@@ -1,4 +1,4 @@
-import { Accordion, Text, List } from "@mantine/core";
+import { Accordion, List } from "@mantine/core";
 
 const tutorials = [
   {
