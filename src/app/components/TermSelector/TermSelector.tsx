@@ -154,6 +154,7 @@ export default function TermSelector(props: TermSelectorProps) {
     <div className="flex flex-col space-y-8 lg:flex-row lg:flex-wrap lg:gap-8 lg:space-y-0">
       <div className="w-60">
         <TermSelectorCombobox
+          label="Year"
           placeholder={yearPlaceholder}
           data={yearStrings}
           onOptionSubmit={onOptionSubmitYear}
@@ -162,6 +163,7 @@ export default function TermSelector(props: TermSelectorProps) {
 
       <div className="w-60">
         <TermSelectorCombobox
+          label="Term"
           placeholder={termPlaceholder}
           data={termStrings}
           onOptionSubmit={onOptionSubmitTerm}

@@ -22,6 +22,8 @@ export default function CourseSelectorAutocomplete(
 
     if (props.data === null) {
       props.setError("Unable to fetch. Please try again later.");
+    } else {
+      props.setError(null);
     }
   }, [props.data]);
 

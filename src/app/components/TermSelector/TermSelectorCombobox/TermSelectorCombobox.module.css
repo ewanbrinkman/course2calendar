@@ -1,0 +1,8 @@
+.error_input {
+  /* color: var(--mantine-color-error); */
+  margin-bottom: calc(var(--mantine-spacing-xs) / 2);
+  /* border: calc(0.0625rem * var(--mantine-scale)) solid
+    var(--mantine-color-error);
+  border-radius: var(--mantine-radius-default);
+  opacity: 0.6; */
+}

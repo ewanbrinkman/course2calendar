@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Input, InputBase, Combobox, useCombobox, Text } from "@mantine/core";
+import classes from "./TermSelectorCombobox.module.css";
 
 interface TermSelectorComboboxProps<T> {
+  label: string;
   placeholder: string;
   data: string[] | null | undefined;
   onOptionSubmit: (value: string) => void;
-  error?: boolean;
-  errorMessage?: string;
 }
 
 export default function TermSelectorCombobox<T>(
@@ -16,8 +16,16 @@ export default function TermSelectorCombobox<T>(
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     setValue(null);
+
+    if (props.data === null) {
+      setError("Unable to fetch. Please try again later.");
+    } else {
+      setError(null);
+    }
   }, [props.data]);
 
   const [value, setValue] = useState<string | null>(null);
@@ -32,49 +40,57 @@ export default function TermSelectorCombobox<T>(
 
   return (
     <div>
-      <Combobox
-        store={combobox}
-        onOptionSubmit={(value) => {
-          setValue(value);
-          props.onOptionSubmit(value);
-          combobox.closeDropdown();
-        }}
-      >
-        <Combobox.Target>
-          <InputBase
-            component="button"
-            type="button"
-            disabled={isDisabled}
-            pointer
-            rightSection={<Combobox.Chevron />}
-            rightSectionPointerEvents={isDisabled ? "none" : "all"}
-            onClick={() => {
-              if (!isDisabled) {
-                combobox.toggleDropdown();
-              }
-            }}
-            styles={{
-              input: {
-                cursor: isDisabled ? "not-allowed" : "pointer",
-                opacity: isDisabled ? 0.6 : 1,
-              },
-            }}
-          >
-            {value || (
-              <Input.Placeholder>{props.placeholder}</Input.Placeholder>
-            )}
-          </InputBase>
-        </Combobox.Target>
+      <Text size="sm">{props.label}</Text>
+      <div className={error ? classes.error_input : ""}>
+        <Combobox
+          store={combobox}
+          onOptionSubmit={(value) => {
+            setValue(value);
+            props.onOptionSubmit(value);
+            combobox.closeDropdown();
+          }}
+        >
+          <Combobox.Target>
+            <InputBase
+              component="button"
+              type="button"
+              disabled={isDisabled}
+              pointer
+              rightSection={<Combobox.Chevron />}
+              rightSectionPointerEvents={isDisabled ? "none" : "all"}
+              onClick={() => {
+                if (!isDisabled) {
+                  combobox.toggleDropdown();
+                }
+              }}
+              styles={{
+                input: {
+                  cursor: isDisabled ? "not-allowed" : "pointer",
+                  opacity: isDisabled ? 0.6 : 1,
+                  borderColor: error ? "var(--mantine-color-error)" : undefined,
+                },
+              }}
+            >
+              {value || (
+                <Input.Placeholder>{props.placeholder}</Input.Placeholder>
+              )}
+            </InputBase>
+          </Combobox.Target>
 
-        {!isDisabled && (
-          <Combobox.Dropdown>
-            <Combobox.Options>{options}</Combobox.Options>
-          </Combobox.Dropdown>
-        )}
-      </Combobox>
-      {props.error && props.errorMessage && (
-        <Text color="red" size="sm" mt="xs">
-          {props.errorMessage}
+          {!isDisabled && (
+            <Combobox.Dropdown>
+              <Combobox.Options>{options}</Combobox.Options>
+            </Combobox.Dropdown>
+          )}
+        </Combobox>
+      </div>
+      {error && (
+        <Text
+          className="errorText"
+          size="xs"
+          style={{ color: "var(--mantine-color-error)" }}
+        >
+          {error}
         </Text>
       )}
     </div>
