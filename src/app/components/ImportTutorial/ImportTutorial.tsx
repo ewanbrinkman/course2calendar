@@ -2,7 +2,7 @@ import { Accordion, Text, List } from "@mantine/core";
 
 const tutorials = [
   {
-    app: "Google Calendar",
+    app: "Google Calendar (Website)",
     steps: [
       'Open "Settings"',
       'Click on "Import & export" (look at the left sidebar)',
@@ -12,12 +12,10 @@ const tutorials = [
     ],
   },
   {
-    app: "Outlook",
+    app: "Outlook (Website)",
     steps: [
-      'Open "Settings"',
-      'Click on "Import & export" (look at the left sidebar)',
-      "Select the downloaded file",
-      "Select the target calendar",
+      "Drag and drop the downloaded file into the calendar",
+      "Select the calendar to import into",
       'Click "Import"',
     ],
   },

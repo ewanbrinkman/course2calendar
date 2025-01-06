@@ -312,6 +312,8 @@ export default function Home() {
         How To Import The Downloaded File To A Calendar
       </Title>
 
+      <Text>Steps for some select calendar services are below.</Text>
+
       <ImportTutorial />
     </div>
   );
