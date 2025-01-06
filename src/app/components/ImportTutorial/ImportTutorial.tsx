@@ -28,14 +28,7 @@ export default function ImportTutorial() {
     <Accordion.Item key={tutorial.app} value={tutorial.app}>
       <Accordion.Control>{tutorial.app}</Accordion.Control>
       <Accordion.Panel>
-        <List
-          type="ordered"
-          //   styles={{
-          //     root: {
-          //       listStyleType: "decimal",
-          //     },
-          //   }}
-        >
+        <List type="ordered" className="list-decimal">
           {tutorial.steps.map((tutorialStep, index) => (
             <List.Item key={index}>{tutorialStep}</List.Item>
           ))}
