@@ -143,6 +143,15 @@ export default function Home() {
   }, [courseSection, courseSelection, selectedCourses]);
 
   const downloadCalendarFile = () => {
+    // const calendar = ical({ name: "Course Schedule" });
+    // calendar.method(ICalCalendarMethod.PUBLISH);
+    // // Download the calendar file.
+    // const link = document.createElement("a");
+    // link.href = URL.createObjectURL(calendarBlob);
+    // link.download = "courses.ics"; // Name the downloaded file
+    // link.click();
+    /*
+
     const calendar = ical({ name: "my first iCal" });
 
     // A method is required for outlook to display event as an invitation
@@ -167,6 +176,8 @@ export default function Home() {
     link.href = URL.createObjectURL(calendarBlob);
     link.download = "courses.ics"; // Name the downloaded file
     link.click();
+
+    */
   };
 
   return (
