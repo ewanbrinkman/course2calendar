@@ -130,8 +130,6 @@ export default function TermSelector(props: TermSelectorProps) {
     } else if (terms.length === 0) {
       return NO_OFFERINGS_TEXT;
     } else {
-      const exampleTerm =
-        terms[terms.length > 1 ? terms.length - 2 : terms.length - 1];
       return "Select A Term";
     }
   }, [year, terms]);
