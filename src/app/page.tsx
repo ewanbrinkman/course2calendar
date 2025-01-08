@@ -8,6 +8,7 @@ import {
   Card,
   ActionIcon,
   Title,
+  useMantineColorScheme,
 } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import CourseSectionSelector from "@components/CourseSelector";
@@ -18,6 +19,13 @@ import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
 import downloadCalendarFile from "@utils/downloadCalendarFile";
 
 export default function Home() {
+  const { setColorScheme } = useMantineColorScheme();
+
+  useEffect(() => {
+    // This prevents white flickering for the dark theme.
+    setColorScheme("dark");
+  }, []);
+
   const [termSelection, setTermSelection] = useState<{
     year: number | null;
     term: Term | null;
