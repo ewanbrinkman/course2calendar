@@ -15,10 +15,7 @@ import TermSelector from "@components/TermSelector";
 import ImportTutorial from "@components/ImportTutorial";
 import { useEffect, useState, useMemo } from "react";
 import courseApiWrapper, { CourseSection, Term } from "course-api-wrapper";
-import ical, {
-  ICalCalendarMethod,
-  ICalEventRepeatingFreq,
-} from "ical-generator";
+import downloadCalendarFile from "@utils/downloadCalendarFile";
 
 export default function Home() {
   const [termSelection, setTermSelection] = useState<{
@@ -146,85 +143,6 @@ export default function Home() {
     }
   }, [courseSection, courseSelection, selectedCourses]);
 
-  const downloadCalendarFile = () => {
-    if (selectedCourses.length === 0) {
-      return;
-    }
-
-    const calendar = ical({ name: "Course Schedule" });
-    calendar.method(ICalCalendarMethod.PUBLISH);
-
-    selectedCourses.forEach(({ course }) => {
-      course.schedule.forEach((schedulePart) => {
-        const daysOfWeekMap: Record<string, number> = {
-          Mo: 1,
-          Tu: 2,
-          We: 3,
-          Th: 4,
-          Fr: 5,
-          Sa: 6,
-          Su: 0,
-        };
-
-        const startDate = new Date(schedulePart.startDate);
-        const endDate = new Date(schedulePart.endDate);
-        const startTimeParts = schedulePart.startTime.split(":");
-        const endTimeParts = schedulePart.endTime.split(":");
-        const courseStartTime = new Date(
-          startDate.getFullYear(),
-          startDate.getMonth(),
-          startDate.getDate(),
-          parseInt(startTimeParts[0]),
-          parseInt(startTimeParts[1])
-        );
-        const courseEndTime = new Date(
-          startDate.getFullYear(),
-          startDate.getMonth(),
-          startDate.getDate(),
-          parseInt(endTimeParts[0]),
-          parseInt(endTimeParts[1])
-        );
-
-        schedulePart.days.forEach((day) => {
-          const dayOffset = daysOfWeekMap[day];
-          if (dayOffset === undefined) return;
-
-          const adjustedStartTime = new Date(courseStartTime);
-          adjustedStartTime.setDate(
-            adjustedStartTime.getDate() +
-              ((dayOffset - courseStartTime.getDay() + 7) % 7)
-          );
-
-          const adjustedEndTime = new Date(adjustedStartTime);
-          adjustedEndTime.setHours(
-            courseEndTime.getHours(),
-            courseEndTime.getMinutes()
-          );
-
-          calendar.createEvent({
-            start: adjustedStartTime,
-            end: adjustedEndTime,
-            summary: `${course.department} ${course.number} - ${schedulePart.sectionCode}`,
-            location: schedulePart.campus,
-            description: `Course Section: ${course.section}`,
-            repeating: {
-              freq: ICalEventRepeatingFreq.WEEKLY,
-              until: endDate,
-            },
-          });
-        });
-      });
-    });
-
-    const calendarBlob = new Blob([calendar.toString()], {
-      type: "text/calendar",
-    });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(calendarBlob);
-    link.download = "course_schedule.ics";
-    link.click();
-  };
-
   return (
     <div className="flex flex-grow flex-col items-center p-8 space-y-8">
       <Title size="h2">Select A Year And Term</Title>
@@ -301,7 +219,17 @@ export default function Home() {
 
       <Button
         disabled={selectedCourses.length === 0}
-        onClick={downloadCalendarFile}
+        onClick={() => {
+          if (!termSelection.year || !termSelection.term) {
+            return;
+          }
+
+          downloadCalendarFile(
+            selectedCourses.map((selectedCourse) => selectedCourse.course),
+            termSelection.year,
+            termSelection.term
+          );
+        }}
       >
         Download Calendar File
       </Button>
@@ -312,7 +240,14 @@ export default function Home() {
         How To Import The Downloaded File To A Calendar
       </Title>
 
-      <Text>Steps for some select calendar services are below.</Text>
+      <Text className="text-center italic">
+        You may need to refresh/reload your calendar for the imported events to
+        appear.
+      </Text>
+
+      <Text className="text-center">
+        Steps for some select calendar services are below.
+      </Text>
 
       <ImportTutorial />
     </div>

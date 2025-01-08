@@ -36,7 +36,7 @@ export default function ImportTutorial() {
   ));
 
   return (
-    <Accordion variant="contained" className="w-96">
+    <Accordion variant="contained" className="w-72 sm:w-96">
       {items}
     </Accordion>
   );

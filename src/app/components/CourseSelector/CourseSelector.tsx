@@ -230,7 +230,7 @@ export default function CourseSectionSelector(
     } else if (sections.length === 0) {
       return NO_OFFERINGS_TEXT;
     } else {
-      return `Select A Number (ex. ${sections[0]})`;
+      return `Select A Section (ex. ${sections[0]})`;
     }
   }, [courseNumber, sections]);
 
