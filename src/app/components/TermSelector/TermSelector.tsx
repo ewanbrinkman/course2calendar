@@ -116,7 +116,7 @@ export default function TermSelector(props: TermSelectorProps) {
     } else if (years.length === 0) {
       return NO_OFFERINGS_TEXT;
     } else {
-      return `Select A Year (ex. ${years[0]})`;
+      return "Select A Year";
     }
   }, [years]);
 
@@ -132,9 +132,7 @@ export default function TermSelector(props: TermSelectorProps) {
     } else {
       const exampleTerm =
         terms[terms.length > 1 ? terms.length - 2 : terms.length - 1];
-      return `Select A Term (ex. ${
-        exampleTerm.charAt(0).toUpperCase() + exampleTerm.slice(1)
-      })`;
+      return "Select A Term";
     }
   }, [year, terms]);
 
