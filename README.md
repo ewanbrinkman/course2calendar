@@ -50,8 +50,7 @@ License][license-shield]][license-url]
 Live Project: [https://course2calendar.com](https://course2calendar.com)
 
 I used to spend about 15 minutes every term adding my courses to my
-calendar. I found that a bit annoying - and so spent much more time
-creating this website - ha! Now, simply add all your courses, then
+calendar.I found it annoying - and so created this website! Now, simply add all your courses, then
 download a file you can import into your calendar with your schedule.
 Hopefully it saves some of you some time!
 
