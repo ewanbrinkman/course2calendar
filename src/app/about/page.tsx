@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex flex-grow flex-col items-center p-8 space-y-8 text-center">
       <Title size="h1">Info</Title>
       <Text>
-        I used to spend about 10 minutes every term adding my courses to my
+        I used to spend about 15 minutes every term adding my courses to my
         calendar. I found that a bit annoying - and so spent much more time
         creating this website - ha! Now, simply add all your courses, then
         download a file you can import into your calendar with your schedule.
